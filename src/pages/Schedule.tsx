@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text'
 import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
@@ -9,11 +10,11 @@ import fonts from '../styles/fonts';
 
 import Button from '../components/Button';
 
-export default function UserIdentification() {
+export default function Schedule() {
 
     const [isFocused, setFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(false);
-    const [name, setName] = useState<string>();
+    const [time, setTime] = useState<string>();
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -24,7 +25,7 @@ export default function UserIdentification() {
 
     function handleInputBlur(){
         setFocused(false);
-        setIsFilled(!!name)
+        setIsFilled(!!time)
     }
 
     function handleInputFocus(){
@@ -33,14 +34,12 @@ export default function UserIdentification() {
 
     function handleInputChange(value: string){
         setIsFilled(!!value);
-        setName(value);
+        setTime(value);
     }
 
-    function handleNavigateToSchedule(){
-        navigation.navigate('Schedule');
+    function handleNavigateToConfirmation(){
+        navigation.navigate('Confirmation');
     }
-
-    
 
     return (
         <SafeAreaView style={styles.container}>
@@ -67,24 +66,41 @@ export default function UserIdentification() {
                             </Text>
 
                             <Text style={styles.title}>
-                                Como podemos {'\n'}
-                                chamar você?
+                                Qual o melhor horário{'\n'}
+                                para você ser notificado?
                             </Text>
 
-                            <TextInput
+                            <TextInputMask
+                                placeholder={'--:--'}
+                                type={'datetime'}
+                                options={{
+                                    format: 'HH:MM'
+                                }}
                                 style={[
                                     styles.input, 
                                     (isFocused || isFilled) && 
                                     { borderBottomColor: colors.theme} 
                                 ]}
+                                keyboardType={'number-pad'}
+                                maxLength={6}
+                                value={time}
+                                onChangeText={(text) => { setTime(text); handleInputChange}}
+                                onBlur={handleInputBlur}
+                                onFocus={handleInputFocus}
+                            />
+
+                            {/* <TextInput
+                                style={}0
                                 placeholder="Digite um nome"
                                 onBlur={handleInputBlur}
                                 onFocus={handleInputFocus}
                                 onChangeText={handleInputChange}
-                            />
+                            /> */}
 
                             <View style={styles.footer}>
-                                <Button onPress={handleNavigateToSchedule} title={'Confirmar'} />
+                                <Button 
+                                title={'Confirmar'} 
+                                onPress={handleNavigateToConfirmation}/>
                             </View>
 
                         </View>

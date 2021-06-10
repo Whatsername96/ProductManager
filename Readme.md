@@ -15,3 +15,13 @@ ou
 >yarn add expo-app-loading 
 ou 
 >npm i expo-app-loading
+
+# Input com máscara de horas
+>yarn add react-native-masked-text
+ou
+>npm i react-native-masked-text
+
+# Swipe
+> yarn add react-native-gesture-handler/Swipeable
+ou
+> npm i react-native-gesture-handler

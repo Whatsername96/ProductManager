@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text'
 import { useNavigation } from '@react-navigation/native';
@@ -16,12 +16,6 @@ export default function Schedule() {
     const [isFilled, setIsFilled] = useState(false);
     const [time, setTime] = useState<string>();
     const navigation = useNavigation();
-
-    useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => true)
-        return () =>
-          BackHandler.removeEventListener('hardwareBackPress', () => true)
-      }, [])
 
     function handleInputBlur(){
         setFocused(false);

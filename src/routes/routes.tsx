@@ -18,6 +18,7 @@ import Others from '../pages/Others';
 import Pets from '../pages/Pets';
 import Medicine from '../pages/Medicine';
 import Paint from '../pages/Paint';
+import Expired from '../pages/Expired';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -28,7 +29,7 @@ export default function Routes() {
                 <Screen
                     name={'Welcome'}
                     component={Welcome}
-                    options={{ headerShown: false, detachPreviousScreen: true}}
+                    options={{ headerShown: false, detachPreviousScreen: true }}
                 />
 
                 <Screen
@@ -136,6 +137,15 @@ export default function Routes() {
                     options={{
                         headerShown: true,
                         header: () => <Header title={'Tintas'} showBack={true} showCalendar={true} />
+                    }}
+                />
+
+                <Screen
+                    name={'Expired'}
+                    component={Expired}
+                    options={{
+                        headerShown: true,
+                        header: () => <Header title={'Vencidos'} showBack={true} showCalendar={false} />
                     }}
                 />
             </Navigator>

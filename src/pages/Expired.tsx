@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-
 import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
@@ -13,7 +12,7 @@ import Card from '../components/Card';
 
 //Colocar 65 de tamanho máximo de caracteres na descricao
 
-export default function Cosmetics() {
+export default function Expired() {
 
     const navigation = useNavigation();
 
@@ -29,21 +28,21 @@ export default function Cosmetics() {
             <View style={styles.container}>
                 <View style={styles.categoryColumn}>
                     <Card
-                        title={'Cosméticos'}
-                        image={images.cosmetic}
-                        description={'descricao do cosmético descricao do cosmético descricao do cosmético'}
+                        title={'Outros'}
+                        image={images.others}
+                        description={'descricao do produto descricao do produto descricao do produto'}
                         date={'10/06/2021'}
                     />
                     <Card
-                        title={'Cosméticos'}
-                        image={images.cosmetic}
-                        description={'descricao do Cosmético'}
+                        title={'Outros'}
+                        image={images.others}
+                        description={'descricao do produto'}
                         date={'10/06/2021'}
                     />
                     <Card
-                        title={'Cosméticos'}
-                        image={images.cosmetic}
-                        description={'descricao do Cosmético'}
+                        title={'Outros'}
+                        image={images.others}
+                        description={'descricao do produto'}
                         date={'10/06/2021'}
                     />
                 </View>

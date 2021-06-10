@@ -23,23 +23,26 @@ export default function Header({ title, showBack, showCalendar }: HeaderProps) {
         <SafeAreaView style={styles.container}>
 
             <View style={styles.content}>
+
                 {showBack ?
                     <TouchableOpacity activeOpacity={0.7} onPress={navigation.goBack}>
                         <Feather name={'chevron-left'} size={50} color={colors.textWhite} />
                     </TouchableOpacity> :
-                    <View style={{width: 24}}/>
+                    <View style={{width: 24, marginLeft: 10}}/>
                 }
+                
                 {title ?
                     <Text style={styles.title}>{title}</Text> :
                     <Text style={styles.title}>Olá, User</Text>
                 }
 
                 {showCalendar ?
-                    <TouchableOpacity activeOpacity={0.7}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Expired')}>
                         <Image source={logoWhite} style={styles.img} />
                     </TouchableOpacity> :
-                    <View />
+                    <View style={{width: 24, marginRight: 10}}/>
                 }
+
             </View>
 
         </SafeAreaView>

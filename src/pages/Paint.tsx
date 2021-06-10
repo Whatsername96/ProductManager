@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { StatusBar } from 'expo-status-bar';
 
 import colors from '../styles/colors';
@@ -10,6 +12,9 @@ import Card from '../components/Card';
 //Colocar 65 de tamanho máximo de caracteres na descricao
 
 export default function Paint() {
+
+    const navigation = useNavigation();
+
     return (
         <View>
             <StatusBar

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Platform, BackHandler, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
@@ -19,28 +19,26 @@ export default function UserIdentification() {
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', () => true)
         return () =>
-          BackHandler.removeEventListener('hardwareBackPress', () => true)
-      }, [])
+            BackHandler.removeEventListener('hardwareBackPress', () => true)
+    }, [])
 
-    function handleInputBlur(){
+    function handleInputBlur() {
         setFocused(false);
         setIsFilled(!!name)
     }
 
-    function handleInputFocus(){
+    function handleInputFocus() {
         setFocused(true);
     }
 
-    function handleInputChange(value: string){
+    function handleInputChange(value: string) {
         setIsFilled(!!value);
         setName(value);
     }
 
-    function handleNavigateToSchedule(){
+    function handleNavigateToSchedule() {
         navigation.navigate('Schedule');
     }
-
-    
 
     return (
         <SafeAreaView style={styles.container}>
@@ -51,49 +49,53 @@ export default function UserIdentification() {
                 translucent={false}
                 hidden={false}
             />
+            
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-            <KeyboardAvoidingView
-                style={styles.container}
-                behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-            >
-                <View style={styles.content}>
+                <KeyboardAvoidingView
+                    style={styles.container}
+                    behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+                >
+                    <View style={styles.content}>
 
-                    <View style={styles.form}>
+                        <View style={styles.form}>
 
-                        <View style={styles.header}>
+                            <View style={styles.header}>
 
-                            <Text style={styles.emoji}>
-                                😊
+                                <Text style={styles.emoji}>
+                                    😊
                             </Text>
 
-                            <Text style={styles.title}>
-                                Como podemos {'\n'}
-                                chamar você?
-                            </Text>
+                                <Text style={styles.title}>
+                                    Como podemos {'\n'}
+                                    chamar você?
+                                </Text>
 
-                            <TextInput
-                                style={[
-                                    styles.input, 
-                                    (isFocused || isFilled) && 
-                                    { borderBottomColor: colors.theme} 
-                                ]}
-                                placeholder="Digite um nome"
-                                onBlur={handleInputBlur}
-                                onFocus={handleInputFocus}
-                                onChangeText={handleInputChange}
-                            />
+                                <TextInput
+                                    style={[
+                                        styles.input,
+                                        (isFocused || isFilled) &&
+                                        { borderBottomColor: colors.theme }
+                                    ]}
+                                    placeholder="Digite um nome"
+                                    onBlur={handleInputBlur}
+                                    onFocus={handleInputFocus}
+                                    onChangeText={handleInputChange}
+                                />
 
-                            <View style={styles.footer}>
-                                <Button onPress={handleNavigateToSchedule} title={'Confirmar'} />
+                                <View style={styles.footer}>
+                                    <Button onPress={handleNavigateToSchedule} title={'Confirmar'} />
+                                </View>
+
                             </View>
 
                         </View>
 
                     </View>
 
-                </View>
+                </KeyboardAvoidingView>
 
-            </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
 
         </SafeAreaView>
     );
@@ -104,7 +106,8 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        backgroundColor: colors.background,
     },
 
     content: {

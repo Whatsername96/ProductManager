@@ -4,11 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
 
+import Header from '../components/Header';
+import ButtonCategory from '../components/ButtonCategory';
+
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-
 import images from '../styles/images';
-import ButtonCategory from '../components/ButtonCategory';
 
 export default function Category() {
 
@@ -31,6 +32,8 @@ export default function Category() {
                 translucent={false}
                 hidden={false}
             />
+
+            <Header title={''} showBack={false} showCalendar={true}/>
 
             <ScrollView 
                 showsHorizontalScrollIndicator={false}
@@ -80,6 +83,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: Dimensions.get('window').height,
+        backgroundColor: colors.background,
     },
 
     text: {

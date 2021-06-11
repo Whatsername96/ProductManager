@@ -25,3 +25,6 @@ ou
 > yarn add react-native-gesture-handler/Swipeable
 ou
 > npm i react-native-gesture-handler
+
+# Navegação em bottom tab
+> yarn add @react-navigation/bottom-tabs

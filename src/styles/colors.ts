@@ -12,6 +12,8 @@ export default {
   inputBorderGray: '#D6D6D6',
   inputBorderPurple: '#7131F3',
 
+  gray: '#D6D6D6',
+
   theme: '#7131F3',
 
   divisor: '#D6D6D6'

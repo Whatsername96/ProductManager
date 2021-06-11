@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text'
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,21 +17,21 @@ export default function Schedule() {
     const [time, setTime] = useState<string>();
     const navigation = useNavigation();
 
-    function handleInputBlur(){
+    function handleInputBlur() {
         setFocused(false);
         setIsFilled(!!time)
     }
 
-    function handleInputFocus(){
+    function handleInputFocus() {
         setFocused(true);
     }
 
-    function handleInputChange(value: string){
+    function handleInputChange(value: string) {
         setIsFilled(!!value);
         setTime(value);
     }
 
-    function handleNavigateToConfirmation(){
+    function handleNavigateToConfirmation() {
         navigation.navigate('Confirmation');
     }
 
@@ -44,46 +44,47 @@ export default function Schedule() {
                 translucent={false}
                 hidden={false}
             />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-            <KeyboardAvoidingView
-                style={styles.container}
-                behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-            >
-                <View style={styles.content}>
+                <KeyboardAvoidingView
+                    style={styles.container}
+                    behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+                >
+                    <View style={styles.content}>
 
-                    <View style={styles.form}>
+                        <View style={styles.form}>
 
-                        <View style={styles.header}>
+                            <View style={styles.header}>
 
-                            <Text style={styles.emoji}>
-                                😊
+                                <Text style={styles.emoji}>
+                                    😊
                             </Text>
 
-                            <Text style={styles.title}>
-                                Qual o melhor horário{'\n'}
+                                <Text style={styles.title}>
+                                    Qual o melhor horário{'\n'}
                                 para você ser notificado?
                             </Text>
 
-                            <TextInputMask
-                                placeholder={'--:--'}
-                                type={'datetime'}
-                                options={{
-                                    format: 'HH:MM'
-                                }}
-                                style={[
-                                    styles.input, 
-                                    (isFocused || isFilled) && 
-                                    { borderBottomColor: colors.theme} 
-                                ]}
-                                keyboardType={'number-pad'}
-                                maxLength={6}
-                                value={time}
-                                onChangeText={(text) => { setTime(text); handleInputChange}}
-                                onBlur={handleInputBlur}
-                                onFocus={handleInputFocus}
-                            />
+                                <TextInputMask
+                                    placeholder={'--:--'}
+                                    type={'datetime'}
+                                    options={{
+                                        format: 'HH:MM'
+                                    }}
+                                    style={[
+                                        styles.input,
+                                        (isFocused || isFilled) &&
+                                        { borderBottomColor: colors.theme }
+                                    ]}
+                                    keyboardType={'number-pad'}
+                                    maxLength={6}
+                                    value={time}
+                                    onChangeText={(text) => { setTime(text); handleInputChange }}
+                                    onBlur={handleInputBlur}
+                                    onFocus={handleInputFocus}
+                                />
 
-                            {/* <TextInput
+                                {/* <TextInput
                                 style={}0
                                 placeholder="Digite um nome"
                                 onBlur={handleInputBlur}
@@ -91,19 +92,21 @@ export default function Schedule() {
                                 onChangeText={handleInputChange}
                             /> */}
 
-                            <View style={styles.footer}>
-                                <Button 
-                                title={'Confirmar'} 
-                                onPress={handleNavigateToConfirmation}/>
+                                <View style={styles.footer}>
+                                    <Button
+                                        title={'Confirmar'}
+                                        onPress={handleNavigateToConfirmation} />
+                                </View>
+
                             </View>
 
                         </View>
 
                     </View>
 
-                </View>
+                </KeyboardAvoidingView>
 
-            </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
 
         </SafeAreaView>
     );
@@ -114,7 +117,8 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        backgroundColor: colors.background,
     },
 
     content: {

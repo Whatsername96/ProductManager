@@ -40,8 +40,9 @@ return (
             style={styles.image}     
             resizeMode={'contain'} />
 
-            <Text style={styles.subtitle}>Não esqueça produtos vencidos em sua casa. 
-                  Nós cuidamos de lembrar você sempre que precisar
+            <Text style={styles.subtitle}>
+                Não esqueça produtos vencidos em sua casa. 
+                Nós cuidamos de lembrar você sempre que precisar
             </Text>
 
             <TouchableOpacity 

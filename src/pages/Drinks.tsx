@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -14,7 +13,6 @@ import images from '../styles/images';
 
 export default function Drinks() {
 
-    const navigation = useNavigation();
     const [data, setData] = useState<ProductProps[]>([]);
     const drinks: ProductProps[] = [];
 

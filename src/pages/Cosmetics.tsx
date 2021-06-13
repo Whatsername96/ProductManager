@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
-
 import { StatusBar } from 'expo-status-bar';
 
 import Header from '../components/Header';
@@ -15,7 +13,6 @@ import images from '../styles/images';
 
 export default function Cosmetics() {
 
-    const navigation = useNavigation();
     const [data, setData] = useState<ProductProps[]>([]);
     const cosmetics: ProductProps[] = [];
 

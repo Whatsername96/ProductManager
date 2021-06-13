@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -12,9 +11,8 @@ import { loadProducts, ProductProps } from '../libs/storage';
 import colors from '../styles/colors';
 import images from '../styles/images';
 
-export default function Hygiene() {
+export default function Pets() {
 
-    const navigation = useNavigation();
     const [data, setData] = useState<ProductProps[]>([]);
     const pets: ProductProps[] = [];
 

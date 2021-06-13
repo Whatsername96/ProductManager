@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Platform, BackHandler, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Platform, BackHandler, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -36,7 +37,20 @@ export default function UserIdentification() {
         setName(value);
     }
 
-    function handleNavigateToSchedule() {
+    async function handleSubmit() {
+        if (!name || name.trim() === '') {
+            return Alert.alert('Me diz como chamar você 🥺');
+        }
+
+        try {
+
+            await AsyncStorage.setItem('@productmanager:user', name);
+            
+        } catch (error) {
+
+            console.log(error);
+        }
+
         navigation.navigate('Schedule');
     }
 
@@ -49,7 +63,7 @@ export default function UserIdentification() {
                 translucent={false}
                 hidden={false}
             />
-            
+
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
                 <KeyboardAvoidingView
@@ -64,29 +78,30 @@ export default function UserIdentification() {
 
                                 <Text style={styles.emoji}>
                                     😊
-                            </Text>
+                                </Text>
 
                                 <Text style={styles.title}>
                                     Como podemos {'\n'}
                                     chamar você?
                                 </Text>
 
-                                <TextInput
-                                    style={[
-                                        styles.input,
-                                        (isFocused || isFilled) &&
-                                        { borderBottomColor: colors.theme }
-                                    ]}
-                                    placeholder="Digite um nome"
-                                    onBlur={handleInputBlur}
-                                    onFocus={handleInputFocus}
-                                    onChangeText={handleInputChange}
-                                />
+                            </View>
 
-                                <View style={styles.footer}>
-                                    <Button onPress={handleNavigateToSchedule} title={'Confirmar'} />
-                                </View>
+                            <TextInput
+                                style={[
+                                    styles.input,
+                                    (isFocused || isFilled) &&
+                                    { borderBottomColor: colors.theme }
+                                ]}
+                                placeholder="Digite um nome"
+                                onBlur={handleInputBlur}
+                                onFocus={handleInputFocus}
+                                onChangeText={handleInputChange}
+                            />
 
+
+                            <View style={styles.footer}>
+                                <Button onPress={handleSubmit} title={'Confirmar'} />
                             </View>
 
                         </View>

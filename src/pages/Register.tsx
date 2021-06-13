@@ -1,45 +1,65 @@
 import React, { useState } from 'react';
 
-import { StyleSheet, View, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TextInput, Image } from 'react-native';
+import { StyleSheet, ScrollView, View, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TextInput, Image, Alert, TouchableOpacity, Text, NativeModules, Dimensions } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
+import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
+
+import { isBefore, format } from 'date-fns';
 
 import { StatusBar } from 'expo-status-bar';
+import { Feather } from '@expo/vector-icons';
 
 import Header from '../components/Header';
+import Button from '../components/Button';
+import ModalApp from '../components/ModalApp';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
 import fonts from '../styles/fonts';
-import { ScrollView } from 'react-native-gesture-handler';
+
+import { ProductProps } from '../libs/storage';
 
 export default function Register() {
 
+    const { StatusBarManager } = NativeModules;
+    const alturaStatusBar = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
+
     const navigation = useNavigation();
+
+    const [product, setProduct] = useState<ProductProps>()
+
     const [isFocusedName, setFocusedName] = useState(false);
     const [isFilledName, setIsFilledName] = useState(false);
-    const [name, setName] = useState<string>();
+    const [name, setName] = useState<string>('');
 
     const [isFocusedDescription, setFocusedDescription] = useState(false);
     const [isFilledDescription, setIsFilledDescription] = useState(false);
-    const [description, setDescription] = useState<string>();
+    const [description, setDescription] = useState<string>('');
+
+    const [category, setCategory] = useState('');
 
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
     const [items, setItems] = useState(
         [
-            { label: 'Alimentos', value: 0, icon: () => <Image source={images.food} style={styles.iconStyle} resizeMode={'contain'} /> },
-            { label: 'Bebidas', value: 1, icon: () => <Image source={images.drinks} style={styles.iconStyle} resizeMode={'contain'} /> },
-            { label: 'Cosméticos', value: 2, icon: () => <Image source={images.cosmetic} style={styles.iconStyle} resizeMode={'contain'} /> },
-            { label: 'Higiene', value: 3, icon: () => <Image source={images.hygiene} style={styles.iconStyle} resizeMode={'contain'} /> },
-            { label: 'Limpeza', value: 4, icon: () => <Image source={images.cleaning} style={styles.iconStyle} resizeMode={'contain'} /> },
-            { label: 'Outros', value: 5, icon: () => <Image source={images.others} style={styles.iconStyle} resizeMode={'contain'} /> },
-            { label: 'Pets', value: 6, icon: () => <Image source={images.pets} style={styles.iconStyle} resizeMode={'contain'} /> },
-            { label: 'Remédios', value: 7, icon: () => <Image source={images.medicine} style={styles.iconStyle} resizeMode={'contain'} /> },
-            { label: 'Tintas', value: 8, icon: () => <Image source={images.paint} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Alimentos', value: 'food', icon: () => <Image source={images.food} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Bebidas', value: 'drinks', icon: () => <Image source={images.drinks} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Cosméticos', value: 'cosmetics', icon: () => <Image source={images.cosmetic} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Higiene', value: 'hygiene', icon: () => <Image source={images.hygiene} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Limpeza', value: 'cleaning', icon: () => <Image source={images.cleaning} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Outros', value: 'others', icon: () => <Image source={images.others} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Pets', value: 'pets', icon: () => <Image source={images.pets} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Remédios', value: 'medicine', icon: () => <Image source={images.medicine} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Tintas', value: 'paint', icon: () => <Image source={images.paint} style={styles.iconStyle} resizeMode={'contain'} /> },
 
         ]
     );
+
+    const [isFilledDate, setIsFilledDate] = useState(false);
+    const [date, setDate] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(Platform.OS == 'ios');
+
+    const [modalVisible, setModalVisible] = useState(false);
 
     function handleInputBlurName() {
         setFocusedName(false);
@@ -69,84 +89,166 @@ export default function Register() {
         setDescription(value);
     }
 
+    function handleOpenDateTimePickerForAndroid() {
+        setShowDatePicker(oldState => !oldState);
+    }
+
+    function handleChangeDate(event: Event, dateTime: Date | undefined) {
+        if (Platform.OS == 'android') {
+            setShowDatePicker(oldState => !oldState);
+        }
+
+        if (dateTime && isBefore(dateTime, new Date())) {
+            setDate(new Date());
+            return Alert.alert('Escolha uma data no futuro!');
+        }
+
+        if (dateTime) {
+            setDate(dateTime);
+            setIsFilledDate(true);
+        }
+    }
+
+    function handleSubmit(){
+        setProduct({
+            id: name,
+            description: description,
+            category: category,
+            date: date.toString(),
+        });
+
+        
+    }
+
     return (
+
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
             <KeyboardAvoidingView
                 style={styles.container}
                 behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS == 'ios' ? 0 : alturaStatusBar}
             >
-                <View style={styles.container}>
+                <StatusBar
+                    style={'light'}
+                    backgroundColor={colors.theme}
+                    translucent={false}
+                    hidden={false}
+                />
+                <Header title={'Cadastrar'} showBack={true} showCalendar={false} />
+                <ScrollView style={styles.containerScrollView}>
 
-                    <StatusBar
-                        style={'light'}
-                        backgroundColor={colors.theme}
-                        translucent={false}
-                        hidden={false}
-                    />
+                    <View style={styles.content}>
 
-                    <Header title={'Cadastrar'} showBack={true} showCalendar={true} />
-                    
-                        <View style={styles.content}>
+                        <TextInput
+                            style={[
+                                styles.input,
+                                (isFocusedName || isFilledName) &&
+                                { borderBottomColor: colors.theme }
+                            ]}
+                            placeholder={"Digite o nome do produto"}
+                            placeholderTextColor={colors.placeholder}
+                            onBlur={handleInputBlurName}
+                            onFocus={handleInputFocusName}
+                            onChangeText={handleInputChangeName}
+                            maxLength={20}
+                            value={name || ''}
+                        />
 
-                            <TextInput
+                        <TextInput
+                            style={[
+                                styles.input,
+                                (isFocusedDescription || isFilledDescription) &&
+                                { borderBottomColor: colors.theme }
+                            ]}
+                            placeholder={"Digite a descrição do produto"}
+                            placeholderTextColor={colors.placeholder}
+                            onBlur={handleInputBlurDescription}
+                            onFocus={handleInputFocusDescription}
+                            onChangeText={handleInputChangeDescription}
+                            maxLength={50}
+                            value={description || ''}
+                        />
+
+                        <DropDownPicker
+                            placeholder={'Selecione uma categoria...'}
+                            placeholderStyle={styles.pickerPlaceholder}
+                            open={open}
+                            value={category}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setCategory}
+                            setItems={setItems}
+                            itemSeparator={true}
+                            style={styles.pickerInput}
+                            containerStyle={styles.containerPicker}
+                            textStyle={styles.textPicker}
+                            labelStyle={styles.labelPicker}
+                            ArrowUpIconComponent={({ style }) => <Feather name="chevron-up" style={style} color={colors.theme} size={25} />}
+                            ArrowDownIconComponent={({ style }) => <Feather name="chevron-down" style={style} color={colors.theme} size={25} />}
+                            arrowIconContainerStyle={styles.arrowContainer}
+                            tickIconContainerStyle={styles.tickIconContainerStyle}
+                            TickIconComponent={({ style }) => <Feather name="check" style={style} color={colors.theme} size={25} />}
+                            dropDownContainerStyle={styles.dropDownContainerPicker}
+                            listItemContainerStyle={styles.dropDownItemsPicker}
+                            listItemLabelStyle={styles.dropDownLabelPicker}
+                            itemSeparatorStyle={styles.itemSeparator}
+                            selectedItemContainerStyle={styles.selectedItemContainer}
+                            selectedItemLabelStyle={styles.selectedItemLabel}
+                        />
+                        {showDatePicker && (
+                            <DateTimePicker
+                                value={date}
+                                mode={'date'}
+                                display={'spinner'}
+                                onChange={handleChangeDate}
+                            />
+                        )}
+
+                        {Platform.OS == 'android' && (
+                            <TouchableOpacity activeOpacity={0.7}
                                 style={[
-                                    styles.input,
-                                    (isFocusedName || isFilledName) &&
+                                    styles.buttonChangeDate,
+                                    isFilledDate &&
                                     { borderBottomColor: colors.theme }
                                 ]}
-                                placeholder="Digite o nome do produto"
-                                onBlur={handleInputBlurName}
-                                onFocus={handleInputFocusName}
-                                onChangeText={handleInputChangeName}
-                                maxLength={20}
-                                value={name}
-                            />
+                                onPress={handleOpenDateTimePickerForAndroid}>
+                                <Text style={styles.dateTimePickerText}>{`Mudar data de validade: ${format(date, 'dd/MM/yyyy')}`}</Text>
+                            </TouchableOpacity>
+                        )}
 
-                            <TextInput
-                                style={[
-                                    styles.input,
-                                    (isFocusedDescription || isFilledDescription) &&
-                                    { borderBottomColor: colors.theme }
-                                ]}
-                                placeholder="Digite a descrição do produto"
-                                onBlur={handleInputBlurDescription}
-                                onFocus={handleInputFocusDescription}
-                                onChangeText={handleInputChangeDescription}
-                                maxLength={50}
-                                value={description}
-                            />
+                        <View style={styles.buttonContainer}>
 
-                            <DropDownPicker
-                                placeholder={'Selecione uma categoria...'}
-                                placeholderStyle={styles.pickerPlaceholder}
-                                open={open}
-                                value={value}
-                                items={items}
-                                setOpen={setOpen}
-                                setValue={setValue}
-                                setItems={setItems}
-                                containerStyle={styles.containerPicker}
-                                style={styles.picker}
-                                itemSeparator={true}
-                                selectedItemLabelStyle={{ fontWeight: 'bold' }}
-                                listItemLabelStyle={styles.labelPicker}
-                                listItemContainerStyle={styles.dropDownPicker}
-                                itemSeparatorStyle={styles.itemSeparator}
-                            //  onChangeItem={() => {}}
+                            <Button
+                                title="Cadastrar Produto"
+                                onPress={() =>{handleSubmit(); setModalVisible(true)}}
                             />
 
                         </View>
 
-                </View>
+                    </View>
+
+                    <ModalApp
+                        show={modalVisible}
+                        close={() => setModalVisible(false)}
+                        title={'😄'}
+                        description={'Produto salvo com sucesso!'}
+                    />
+
+                </ScrollView>
 
             </KeyboardAvoidingView>
 
         </TouchableWithoutFeedback>
+
     );
 }
 
 const styles = StyleSheet.create({
+    containerScrollView: {
+        height: Dimensions.get('window').height,
+    },
+
     container: {
         flex: 1,
         backgroundColor: colors.background,
@@ -156,13 +258,14 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         alignItems: 'center',
-        paddingHorizontal: 20,
+        paddingHorizontal: 30,
     },
 
     input: {
         height: 40,
         borderBottomWidth: 1,
         borderBottomColor: colors.inputBorderGray,
+        fontFamily: fonts.text,
         color: colors.text,
         width: '100%',
         fontSize: 18,
@@ -171,17 +274,27 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
-    iconStyle: {
-        height: '100%',
-        justifyContent: 'center',
+    buttonChangeDate: {
+        width: '100%',
+        marginTop: 50,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.inputBorderGray,
+        alignItems: 'center',
+    },
+
+    dateTimePickerText: {
+        paddingBottom: 10,
+        color: colors.text,
+        fontFamily: fonts.text,
+        fontSize: 18,
     },
 
     containerPicker: {
         marginTop: 50,
     },
 
-    picker: {
-        backgroundColor: '#FFF',
+    pickerInput: {
+        backgroundColor: colors.background,
         borderRadius: 6,
         paddingVertical: 10,
         borderWidth: 1,
@@ -191,28 +304,52 @@ const styles = StyleSheet.create({
         height: 60,
     },
 
-    dropDownPicker: {
-        backgroundColor: '#FFF',
+    pickerPlaceholder: {
+        fontSize: 16,
+        color: colors.placeholder,
+    },
+
+    textPicker: {
+        fontFamily: fonts.text,
+        fontSize: 16,
+    },
+
+    labelPicker: {
+        color: colors.theme,
+        fontWeight: 'bold',
+    },
+
+    arrowContainer: {
+        alignItems: 'center',
+        marginHorizontal: 20,
+        justifyContent: 'center',
+    },
+
+    tickIconContainerStyle: {
+        paddingHorizontal: 20,
+    },
+
+    dropDownContainerPicker: {
+        backgroundColor: colors.background,
         borderWidth: 1,
+        borderColor: colors.theme,
+        width: '100%',
+    },
+
+    iconStyle: {
+        height: '100%',
+        justifyContent: 'center',
+    },
+
+    dropDownItemsPicker: {
+        backgroundColor: colors.background,
         borderColor: colors.theme,
         height: 60,
         paddingVertical: 10,
         width: '100%',
     },
 
-    pickerPlaceholder: {
-        fontFamily: fonts.text,
-        fontSize: 20,
-        color: '#B4B3B3',
-    },
-
-    itemsPicker: {
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        height: 50,
-    },
-
-    labelPicker: {
+    dropDownLabelPicker: {
         justifyContent: 'center',
         fontFamily: fonts.text,
         fontSize: 16,
@@ -222,5 +359,21 @@ const styles = StyleSheet.create({
 
     itemSeparator: {
         backgroundColor: colors.theme,
+    },
+
+    selectedItemContainer: {
+        backgroundColor: colors.themeLowOpacity,
+    },
+
+    selectedItemLabel: {
+        color: colors.theme,
+        fontWeight: 'bold',
+    },
+
+    buttonContainer: {
+        marginTop: 50,
+        width: '90%',
+        marginBottom: 30,
     }
+
 });

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { TextInputMask } from 'react-native-masked-text'
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
+import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { format } from 'date-fns';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -12,26 +15,71 @@ import Button from '../components/Button';
 
 export default function Schedule() {
 
-    const [isFocused, setFocused] = useState(false);
-    const [isFilled, setIsFilled] = useState(false);
-    const [time, setTime] = useState<string>();
+    const [isFilledTime, setIsFilledTime] = useState(false);
+    const [time, setTime] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(Platform.OS == 'ios');
     const navigation = useNavigation();
 
-    function handleInputBlur() {
-        setFocused(false);
-        setIsFilled(!!time)
+    // function handleInputBlur() {
+    //     setFocused(false);
+    //     setIsFilled(!!time)
+    // }
+
+    // function handleInputFocus() {
+    //     setFocused(true);
+    // }
+
+    // function handleInputChange(value: string) {
+    //     setIsFilled(!!value);
+    //     setTime(value);
+    // }
+
+    useEffect(() => {
+        async function loadStorageTimeUser() {
+
+            try {
+                const time = await AsyncStorage.getItem('@productmanager:time');
+
+                if (time) {
+
+                    setTime(new Date(time));
+                }
+
+            } catch (error) {
+
+                console.log(error);
+            }
+
+        }
+        loadStorageTimeUser();
+    }, []);
+
+    function handleOpenDateTimePickerForAndroid() {
+        setShowDatePicker(oldState => !oldState);
     }
 
-    function handleInputFocus() {
-        setFocused(true);
+    function handleChangeTime(event: Event, dateTime: Date | undefined) {
+        if (Platform.OS == 'android') {
+            setShowDatePicker(oldState => !oldState);
+        }
+
+        if (dateTime) {
+            setTime(dateTime);
+            setIsFilledTime(true);
+        }
     }
 
-    function handleInputChange(value: string) {
-        setIsFilled(!!value);
-        setTime(value);
-    }
+    async function handleNavigateToConfirmation() {
 
-    function handleNavigateToConfirmation() {
+        try {
+
+            await AsyncStorage.setItem('@productmanager:time', time.toString());
+
+        } catch (error) {
+
+            console.log(error);
+        }
+
         navigation.navigate('Confirmation');
     }
 
@@ -58,46 +106,60 @@ export default function Schedule() {
 
                                 <Text style={styles.emoji}>
                                     😊
-                            </Text>
+                                </Text>
 
                                 <Text style={styles.title}>
                                     Qual o melhor horário{'\n'}
-                                para você ser notificado?
-                            </Text>
+                                    para você ser notificado?
+                                </Text>
 
-                                <TextInputMask
-                                    placeholder={'--:--'}
-                                    type={'datetime'}
-                                    options={{
-                                        format: 'HH:MM'
-                                    }}
-                                    style={[
-                                        styles.input,
-                                        (isFocused || isFilled) &&
-                                        { borderBottomColor: colors.theme }
-                                    ]}
-                                    keyboardType={'number-pad'}
-                                    maxLength={6}
-                                    value={time}
-                                    onChangeText={(text) => { setTime(text); handleInputChange }}
-                                    onBlur={handleInputBlur}
-                                    onFocus={handleInputFocus}
-                                />
+                            </View>
 
-                                {/* <TextInput
-                                style={}0
-                                placeholder="Digite um nome"
+                            {/* <TextInputMask
+                                placeholder={'--:--'}
+                                type={'datetime'}
+                                options={{
+                                    format: 'HH:MM'
+                                }}
+                                style={[
+                                    styles.input,
+                                    (isFocused || isFilled) &&
+                                    { borderBottomColor: colors.theme }
+                                ]}
+                                keyboardType={'number-pad'}
+                                maxLength={6}
+                                value={time}
+                                onChangeText={(text) => { setTime(text); handleInputChange }}
                                 onBlur={handleInputBlur}
                                 onFocus={handleInputFocus}
-                                onChangeText={handleInputChange}
                             /> */}
 
-                                <View style={styles.footer}>
-                                    <Button
-                                        title={'Confirmar'}
-                                        onPress={handleNavigateToConfirmation} />
-                                </View>
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    value={time}
+                                    mode={'time'}
+                                    display={'spinner'}
+                                    onChange={handleChangeTime}
+                                />
+                            )}
 
+                            {Platform.OS == 'android' && (
+                                <TouchableOpacity activeOpacity={0.7}
+                                    style={[
+                                        styles.buttonChangeTime,
+                                        isFilledTime &&
+                                        { borderBottomColor: colors.theme }
+                                    ]}
+                                    onPress={handleOpenDateTimePickerForAndroid}>
+                                    <Text style={styles.dateTimePickerText}>{`Mudar Horário: ${format(time, 'HH:mm')}`}</Text>
+                                </TouchableOpacity>
+                            )}
+
+
+                            <View style={styles.footer}>
+                                <Button
+                                    title={'Confirmar'}
+                                    onPress={handleNavigateToConfirmation} />
                             </View>
 
                         </View>
@@ -149,6 +211,21 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: colors.title,
         fontFamily: fonts.title,
+    },
+
+    buttonChangeTime: {
+        width: '100%',
+        marginTop: 50,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.inputBorderGray,
+        alignItems: 'center',
+    },
+
+    dateTimePickerText: {
+        paddingBottom: 10,
+        color: colors.text,
+        fontFamily: fonts.text,
+        fontSize: 18,
     },
 
     input: {

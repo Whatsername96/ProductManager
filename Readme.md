@@ -28,3 +28,12 @@ ou
 
 # Navegação em bottom tab
 > yarn add @react-navigation/bottom-tabs
+
+# Picker de data/hora
+>yarn add @react-native-community/datetimepicker
+
+# Validação de data/hora
+>yarn add date-fns
+
+# Async Storage
+>yarn add @react-native-async-storage/async-storage

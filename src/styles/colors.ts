@@ -16,5 +16,7 @@ export default {
 
   theme: '#7131F3',
 
+  themeLowOpacity: 'rgba(113, 49, 243, 0.4)',
+
   divisor: '#D6D6D6'
 }

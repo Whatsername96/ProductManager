@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Alert, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
@@ -7,16 +7,43 @@ import { StatusBar } from 'expo-status-bar';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import EmptyCategory from '../components/EmptyCategory';
+import { loadProducts, ProductProps } from '../libs/storage';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
 
-//Colocar 65 de tamanho máximo de caracteres na descricao
-
 export default function Food() {
 
     const navigation = useNavigation();
-    const [data, setData] = useState({});
+    const [data, setData] = useState<ProductProps[]>([]);
+    const foods: ProductProps[] = [];
+
+    useEffect(() => {
+
+        async function getData() {
+
+            try {
+                setData(await loadProducts());
+
+            } catch (error) {
+
+                return Alert.alert('Não foi possível carregar os produtos dessa categoria 🥺');
+            }
+        }
+
+        getData();
+
+    }, []);
+
+    function selectFoodData() {
+        data.forEach((item => {
+            if (item.category === 'food') {
+                foods.push(item);
+            }
+        }));
+    }
+
+    selectFoodData();
 
     return (
         <View>
@@ -32,34 +59,29 @@ export default function Food() {
 
             <View style={styles.container}>
 
-                {data ?
+                {foods.length === 0 ?
+                    <EmptyCategory />
+
+                    :
 
                     <View style={styles.categoryColumn}>
 
-                        <Card
-                            title={'Alimentos'}
-                            image={images.food}
-                            description={'descricao do alimento descricao do alimento descricao do alimento'}
-                            date={'10/06/2021'}
-                        />
+                        {foods.map(food => {
 
-                        <Card
-                            title={'Alimentos'}
-                            image={images.food}
-                            description={'descricao do alimento'}
-                            date={'10/06/2021'}
-                        />
+                            return (
 
-                        <Card
-                            title={'Alimentos'}
-                            image={images.food}
-                            description={'descricao do alimento'}
-                            date={'10/06/2021'}
-                        />
+                                <Card
+                                    title={food.id}
+                                    image={images.food}
+                                    description={food.description}
+                                    date={food.date}
+                                    key={food.id}
+                                />
 
-                    </View> :
+                            )
+                        })}
 
-                    <EmptyCategory />
+                    </View>
                 }
 
             </View>

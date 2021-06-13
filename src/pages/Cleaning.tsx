@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
@@ -7,20 +7,47 @@ import { StatusBar } from 'expo-status-bar';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import EmptyCategory from '../components/EmptyCategory';
+import { loadProducts, ProductProps } from '../libs/storage';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
 
-//Colocar 65 de tamanho máximo de caracteres na descricao
-
 export default function Cleaning() {
 
     const navigation = useNavigation();
-    const [data, setData] = useState({});
+    const [data, setData] = useState<ProductProps[]>([]);
+    const cleaning: ProductProps[] = [];
+
+    useEffect(() => {
+
+        async function getData() {
+
+            try {
+                setData(await loadProducts());
+
+            } catch (error) {
+
+                return Alert.alert('Não foi possível carregar os produtos dessa categoria 🥺');
+            }
+        }
+
+        getData();
+
+    }, []);
+
+    function selectCleaningData() {
+        data.forEach((item => {
+            if (item.category === 'cleaning') {
+                cleaning.push(item);
+            }
+        }));
+    }
+
+    selectCleaningData();
 
     return (
         <View>
-            
+
             <StatusBar
                 style={'light'}
                 backgroundColor={colors.theme}
@@ -32,34 +59,29 @@ export default function Cleaning() {
 
             <View style={styles.container}>
 
-                { data ?
-
-                    <View style={styles.categoryColumn}>
-                        
-                        <Card
-                            title={'Limpeza'}
-                            image={images.cleaning}
-                            description={'descricao do produto descricao do produto descricao do produto'}
-                            date={'10/06/2021'}
-                        />
-
-                        <Card
-                            title={'Alimentos'}
-                            image={images.cleaning}
-                            description={'descricao do produto'}
-                            date={'10/06/2021'}
-                        />
-
-                        <Card
-                            title={'Alimentos'}
-                            image={images.cleaning}
-                            description={'descricao do produto'}
-                            date={'10/06/2021'}
-                        />
-                        
-                    </View> :
+                {cleaning.length === 0 ?
 
                     <EmptyCategory />
+
+                    :
+
+                    <View style={styles.categoryColumn}>
+
+                        {cleaning.map(cleaningItem => {
+                            return (
+
+                                <Card
+                                    title={cleaningItem.id}
+                                    image={images.cleaning}
+                                    description={cleaningItem.description}
+                                    date={cleaningItem.date}
+                                    key={cleaningItem.id}
+                                />
+
+                            )
+                        })}
+
+                    </View>
                 }
 
             </View>

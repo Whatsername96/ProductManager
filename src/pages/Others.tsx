@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
@@ -7,16 +7,43 @@ import { StatusBar } from 'expo-status-bar';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import EmptyCategory from '../components/EmptyCategory';
+import { loadProducts, ProductProps } from '../libs/storage';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
 
-//Colocar 65 de tamanho máximo de caracteres na descricao
-
-export default function Others() {
+export default function Hygiene() {
 
     const navigation = useNavigation();
-    const [data, setData] = useState({});
+    const [data, setData] = useState<ProductProps[]>([]);
+    const others: ProductProps[] = [];
+
+    useEffect(() => {
+
+        async function getData() {
+
+            try {
+                setData(await loadProducts());
+
+            } catch (error) {
+
+                return Alert.alert('Não foi possível carregar os produtos dessa categoria 🥺');
+            }
+        }
+
+        getData();
+
+    }, []);
+
+    function selectOthersData() {
+        data.forEach((item => {
+            if (item.category === 'others') {
+                others.push(item);
+            }
+        }));
+    }
+
+    selectOthersData();
 
     return (
         <View>
@@ -31,33 +58,30 @@ export default function Others() {
             <Header title={'Outros'} showBack={true} showCalendar={true} />
 
             <View style={styles.container}>
-                {data ?
-                    < View style={styles.categoryColumn}>
 
-                        <Card
-                            title={'Outros'}
-                            image={images.others}
-                            description={'descricao do produto descricao do produto descricao do produto'}
-                            date={'10/06/2021'}
-                        />
-
-                        <Card
-                            title={'Outros'}
-                            image={images.others}
-                            description={'descricao do produto'}
-                            date={'10/06/2021'}
-                        />
-
-                        <Card
-                            title={'Outros'}
-                            image={images.others}
-                            description={'descricao do produto'}
-                            date={'10/06/2021'}
-                        />
-
-                    </View> :
+                {others.length === 0 ?
 
                     <EmptyCategory />
+
+                    :
+
+                    <View style={styles.categoryColumn}>
+
+                        {others.map(other => {
+                            return (
+
+                                <Card
+                                    title={other.id}
+                                    image={images.others}
+                                    description={other.description}
+                                    date={other.date}
+                                    key={other.id}
+                                />
+
+                            )
+                        })}
+
+                    </View>
                 }
 
             </View>

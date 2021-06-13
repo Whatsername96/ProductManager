@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
+import { 
+    View, 
+    Text, 
+    StyleSheet,
+    SafeAreaView, 
+    KeyboardAvoidingView, 
+    Platform, 
+    TouchableWithoutFeedback, 
+    Keyboard, 
+    TouchableOpacity, 
+    Alert } from 'react-native';
+    
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,20 +31,6 @@ export default function Schedule() {
     const [showDatePicker, setShowDatePicker] = useState(Platform.OS == 'ios');
     const navigation = useNavigation();
 
-    // function handleInputBlur() {
-    //     setFocused(false);
-    //     setIsFilled(!!time)
-    // }
-
-    // function handleInputFocus() {
-    //     setFocused(true);
-    // }
-
-    // function handleInputChange(value: string) {
-    //     setIsFilled(!!value);
-    //     setTime(value);
-    // }
-
     useEffect(() => {
         async function loadStorageTimeUser() {
 
@@ -48,6 +45,8 @@ export default function Schedule() {
             } catch (error) {
 
                 console.log(error);
+                return Alert.alert('Não foi possível salvar seu horário escolhido🥺');
+
             }
 
         }

@@ -1,6 +1,21 @@
 import React, { useState } from 'react';
 
-import { StyleSheet, ScrollView, View, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, TextInput, Image, Alert, TouchableOpacity, Text, NativeModules, Dimensions } from 'react-native';
+import { 
+    StyleSheet, 
+    ScrollView, 
+    View, 
+    KeyboardAvoidingView, 
+    Platform, 
+    TouchableWithoutFeedback, 
+    Keyboard, 
+    TextInput, 
+    Image, 
+    Alert, 
+    TouchableOpacity, 
+    Text, 
+    NativeModules, 
+    Dimensions } from 'react-native';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
@@ -18,7 +33,7 @@ import colors from '../styles/colors';
 import images from '../styles/images';
 import fonts from '../styles/fonts';
 
-import { ProductProps } from '../libs/storage';
+import { saveProduct } from '../libs/storage';
 
 export default function Register() {
 
@@ -26,8 +41,6 @@ export default function Register() {
     const alturaStatusBar = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
 
     const navigation = useNavigation();
-
-    const [product, setProduct] = useState<ProductProps>()
 
     const [isFocusedName, setFocusedName] = useState(false);
     const [isFilledName, setIsFilledName] = useState(false);
@@ -51,7 +64,6 @@ export default function Register() {
             { label: 'Pets', value: 'pets', icon: () => <Image source={images.pets} style={styles.iconStyle} resizeMode={'contain'} /> },
             { label: 'Remédios', value: 'medicine', icon: () => <Image source={images.medicine} style={styles.iconStyle} resizeMode={'contain'} /> },
             { label: 'Tintas', value: 'paint', icon: () => <Image source={images.paint} style={styles.iconStyle} resizeMode={'contain'} /> },
-
         ]
     );
 
@@ -60,6 +72,7 @@ export default function Register() {
     const [showDatePicker, setShowDatePicker] = useState(Platform.OS == 'ios');
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     function handleInputBlurName() {
         setFocusedName(false);
@@ -109,16 +122,23 @@ export default function Register() {
         }
     }
 
-    function handleSubmit(){
-        setProduct({
-            id: name,
-            description: description,
-            category: category,
-            date: date.toString(),
-        });
+    async function handleSave() {
 
-        
+        try {
+
+            await saveProduct({
+                id: name || '',
+                description: description || '',
+                category: category || '',
+                date: date.toString() || new Date().toString(),
+            })
+
+        } catch (error) {
+            setErrorMessage(error.message);
+        }
     }
+
+    console.log(errorMessage);
 
     return (
 
@@ -221,20 +241,27 @@ export default function Register() {
 
                             <Button
                                 title="Cadastrar Produto"
-                                onPress={() =>{handleSubmit(); setModalVisible(true)}}
+                                onPress={() => { handleSave(); setModalVisible(true) }}
                             />
 
                         </View>
 
                     </View>
 
-                    <ModalApp
-                        show={modalVisible}
-                        close={() => setModalVisible(false)}
-                        title={'😄'}
-                        description={'Produto salvo com sucesso!'}
-                    />
-
+                    {errorMessage == '' ?
+                        <ModalApp
+                            show={modalVisible}
+                            close={() => setModalVisible(false)}
+                            title={'😄'}
+                            description={'Produto salvo com sucesso!'}
+                        /> :
+                        <ModalApp
+                            show={modalVisible}
+                            close={() => setModalVisible(false)}
+                            title={'😕'}
+                            description={'Ocorreu um erro. Tente mudar o nome do produto.'}
+                        />
+                    }
                 </ScrollView>
 
             </KeyboardAvoidingView>

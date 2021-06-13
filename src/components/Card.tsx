@@ -41,6 +41,8 @@ export default function Card({ title, image, description, date, ...rest }: Botao
         );
     }
 
+    
+
     return (
         <Swipeable renderRightActions={RightActions} containerStyle={styles.container}>
             <View style={styles.content}>

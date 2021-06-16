@@ -2,11 +2,12 @@ import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { format } from 'date-fns';
+import images from '../styles/images';
 
 export interface ProductProps{
     id: string;
     description: string;
-    category: string;
+    category: keyof typeof images;
     date: string;
 }
 

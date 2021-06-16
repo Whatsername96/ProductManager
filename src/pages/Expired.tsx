@@ -1,23 +1,53 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+
+import { isPast } from 'date-fns';
 
 import { StatusBar } from 'expo-status-bar';
 
 import Header from '../components/Header';
 import Card from '../components/Card';
+import { loadProducts, ProductProps } from '../libs/storage';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
 import fonts from '../styles/fonts';
 
-
-//Colocar 65 de tamanho máximo de caracteres na descricao
-
 export default function Expired() {
 
-    const navigation = useNavigation();
-    const [data, setData] = useState({});
+    const [data, setData] = useState<ProductProps[]>([]);
+    const expired: ProductProps[] = [];
+
+    useEffect(() => {
+
+        async function getData() {
+
+            try {
+                setData(await loadProducts());
+
+            } catch (error) {
+
+                return Alert.alert('Não foi possível carregar os produtos dessa categoria 🥺');
+            }
+        }
+
+        getData();
+
+    }, []);
+
+    function selectExpiredData() {
+        data.forEach((item => {
+            let partsDate = item.date.split('/');
+            let date = new Date(parseInt(partsDate[2]), parseInt(partsDate[1]) - 1, parseInt(partsDate[0]));
+            let hoje = new Date();
+            if ( date < new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) ) {
+                expired.push(item);
+            }
+        }));
+
+    }
+
+    selectExpiredData();
 
     return (
         <View>
@@ -33,45 +63,39 @@ export default function Expired() {
 
             <View style={styles.container}>
 
-            { data ?
+                {expired.length === 0 ?
 
-                <View style={styles.categoryColumn}>
+                    <View style={styles.empty}>
 
-                    <Card
-                        title={'Alimento'}
-                        image={images.food}
-                        description={'descricao do produto descricao do produto descricao do produto'}
-                        date={'10/06/2021'}
-                    />
+                        <Text style={styles.emoji}>
+                            😄
+                        </Text>
 
-                    <Card
-                        title={'Cosmético'}
-                        image={images.cosmetic}
-                        description={'descricao do produto'}
-                        date={'10/06/2021'}
-                    />
+                        <Text style={styles.text}>
+                            Não há produtos vencidos.
+                        </Text>
 
-                    <Card
-                        title={'Higiene'}
-                        image={images.hygiene}
-                        description={'descricao do produto'}
-                        date={'10/06/2021'}
-                    />
+                    </View>
 
-                </View> :
+                    :
 
-                <View style={styles.empty}>
+                    <View style={styles.categoryColumn}>
 
-                    <Text style={styles.emoji}>
-                        😄
-                    </Text>
+                        {expired.map(expiredItems => {
 
-                    <Text style={styles.text}>
-                        Não há produtos vencidos.
-                    </Text>
+                            return (
+                                <Card
+                                    title={expiredItems.id}
+                                    image={images[expiredItems.category]}
+                                    description={expiredItems.description}
+                                    date={expiredItems.date}
+                                    key={expiredItems.id}
+                                />
 
-                </View> 
+                            )
+                        })}
 
+                    </View>
                 }
 
             </View>

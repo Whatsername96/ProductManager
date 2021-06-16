@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { 
     StyleSheet, 
-    ScrollView, 
+    SafeAreaView , 
     View, 
     KeyboardAvoidingView, 
     Platform, 
@@ -17,7 +17,6 @@ import {
     Dimensions } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
-import { useNavigation } from '@react-navigation/native';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 
 import { isBefore, format } from 'date-fns';
@@ -40,8 +39,6 @@ export default function Register() {
     const { StatusBarManager } = NativeModules;
     const alturaStatusBar = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
 
-    const navigation = useNavigation();
-
     const [isFocusedName, setFocusedName] = useState(false);
     const [isFilledName, setIsFilledName] = useState(false);
     const [name, setName] = useState<string>('');
@@ -50,14 +47,14 @@ export default function Register() {
     const [isFilledDescription, setIsFilledDescription] = useState(false);
     const [description, setDescription] = useState<string>('');
 
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState<keyof typeof images>('food');
 
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState(
         [
             { label: 'Alimentos', value: 'food', icon: () => <Image source={images.food} style={styles.iconStyle} resizeMode={'contain'} /> },
             { label: 'Bebidas', value: 'drinks', icon: () => <Image source={images.drinks} style={styles.iconStyle} resizeMode={'contain'} /> },
-            { label: 'Cosméticos', value: 'cosmetics', icon: () => <Image source={images.cosmetic} style={styles.iconStyle} resizeMode={'contain'} /> },
+            { label: 'Cosméticos', value: 'cosmetics', icon: () => <Image source={images.cosmetics} style={styles.iconStyle} resizeMode={'contain'} /> },
             { label: 'Higiene', value: 'hygiene', icon: () => <Image source={images.hygiene} style={styles.iconStyle} resizeMode={'contain'} /> },
             { label: 'Limpeza', value: 'cleaning', icon: () => <Image source={images.cleaning} style={styles.iconStyle} resizeMode={'contain'} /> },
             { label: 'Outros', value: 'others', icon: () => <Image source={images.others} style={styles.iconStyle} resizeMode={'contain'} /> },
@@ -138,8 +135,6 @@ export default function Register() {
         }
     }
 
-    console.log(errorMessage);
-
     return (
 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -156,7 +151,10 @@ export default function Register() {
                     hidden={false}
                 />
                 <Header title={'Cadastrar'} showBack={true} showCalendar={false} />
-                <ScrollView style={styles.containerScrollView}>
+
+                <SafeAreaView  
+                style={styles.containerScrollView}
+                >
 
                     <View style={styles.content}>
 
@@ -216,6 +214,7 @@ export default function Register() {
                             selectedItemContainerStyle={styles.selectedItemContainer}
                             selectedItemLabelStyle={styles.selectedItemLabel}
                         />
+                        
                         {showDatePicker && (
                             <DateTimePicker
                                 value={date}
@@ -248,7 +247,7 @@ export default function Register() {
 
                     </View>
 
-                    {errorMessage == '' ?
+                    {errorMessage === '' ?
                         <ModalApp
                             show={modalVisible}
                             close={() => setModalVisible(false)}
@@ -262,7 +261,7 @@ export default function Register() {
                             description={'Ocorreu um erro. Tente mudar o nome do produto.'}
                         />
                     }
-                </ScrollView>
+                </SafeAreaView >
 
             </KeyboardAvoidingView>
 
@@ -278,7 +277,6 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: colors.background,
     },
 
     content: {

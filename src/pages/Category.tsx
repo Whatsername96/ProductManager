@@ -52,7 +52,7 @@ export default function Category() {
                         <View style={styles.categoryLineOne}>
                             <ButtonCategory title={'Alimentos'} image={images.food} onPress={ () => navigation.navigate('Food') }/>
                             <ButtonCategory title={'Bebidas'} image={images.drinks} onPress={ () => navigation.navigate('Drinks') }/>
-                            <ButtonCategory title={'Cosméticos'} image={images.cosmetic} onPress={ () => navigation.navigate('Cosmetics') }/>
+                            <ButtonCategory title={'Cosméticos'} image={images.cosmetics} onPress={ () => navigation.navigate('Cosmetics') }/>
                         </View>
 
                         <View style={styles.categoryLineOne}>

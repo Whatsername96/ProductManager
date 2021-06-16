@@ -1,6 +1,6 @@
 import food from '../images/food.png';
 import drinks from '../images/drinks.png';
-import cosmetic from '../images/cosmetic.png';
+import cosmetics from '../images/cosmetic.png';
 import hygiene from '../images/hygiene.png';
 import cleaning from '../images/cleaning.png';
 import others from '../images/others.png';
@@ -11,13 +11,12 @@ import paint from '../images/paint.png';
 export default {
     food: food,
     drinks: drinks,
-    cosmetic:cosmetic,
+    cosmetics:cosmetics,
     hygiene: hygiene,
     cleaning: cleaning,
     others: others,
     pets: pets,
     medicine: medicine,
     paint: paint,
-
   }
   

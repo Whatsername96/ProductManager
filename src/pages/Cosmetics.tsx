@@ -69,7 +69,7 @@ export default function Cosmetics() {
 
                                     <Card
                                         title={cosmetic.id}
-                                        image={images.cosmetic}
+                                        image={images.cosmetics}
                                         description={cosmetic.description}
                                         date={cosmetic.date}
                                         key={cosmetic.id}

@@ -11,7 +11,7 @@ import paint from '../images/paint.png';
 export default {
     food: food,
     drinks: drinks,
-    cosmetics:cosmetics,
+    cosmetics: cosmetics,
     hygiene: hygiene,
     cleaning: cleaning,
     others: others,

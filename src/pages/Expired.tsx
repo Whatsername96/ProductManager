@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 
-import { isPast } from 'date-fns';
-
 import { StatusBar } from 'expo-status-bar';
 
 import Header from '../components/Header';
 import Card from '../components/Card';
-import { loadProducts, ProductProps } from '../libs/storage';
+import { loadProducts, ProductProps, removeProduct } from '../libs/storage';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
@@ -49,6 +47,32 @@ export default function Expired() {
 
     selectExpiredData();
 
+    function handleRemove(expiredItem: ProductProps) {
+        Alert.alert('Remover', `Deseja remover a ${expiredItem.id}?`, [
+            {
+                text: 'Não',
+                style: 'cancel',
+            },
+            { 
+                text: 'Sim',
+                onPress: async () => {
+                    try {
+                        await removeProduct(expiredItem.id);
+                        setData((oldData) => (
+                            oldData.filter((item) => item.id !== expiredItem.id)
+                        ));
+
+                    } catch (error) {
+
+                        Alert.alert('Não foi possível excluir o produto 🥺');
+                        console.log(error.message);
+                        
+                    }
+                }
+            }
+        ]);
+    }
+
     return (
         <View>
 
@@ -81,15 +105,16 @@ export default function Expired() {
 
                     <View style={styles.categoryColumn}>
 
-                        {expired.map(expiredItems => {
+                        {expired.map(expiredItem => {
 
                             return (
                                 <Card
-                                    title={expiredItems.id}
-                                    image={images[expiredItems.category]}
-                                    description={expiredItems.description}
-                                    date={expiredItems.date}
-                                    key={expiredItems.id}
+                                    title={expiredItem.id}
+                                    image={images[expiredItem.category]}
+                                    description={expiredItem.description}
+                                    date={expiredItem.date}
+                                    key={expiredItem.id}
+                                    handleRemove={() => {handleRemove(expiredItem)}}
                                 />
 
                             )

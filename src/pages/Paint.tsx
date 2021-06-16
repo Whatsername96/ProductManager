@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import EmptyCategory from '../components/EmptyCategory';
-import { loadProducts, ProductProps } from '../libs/storage';
+import { loadProducts, ProductProps, removeProduct} from '../libs/storage';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
@@ -43,6 +43,32 @@ export default function Paint() {
 
     selectPaintData();
 
+   function handleRemove(paintItem: ProductProps) {
+    Alert.alert('Remover', `Deseja remover a ${paintItem.id}?`, [
+        {
+            text: 'Não',
+            style: 'cancel',
+        },
+        { 
+            text: 'Sim',
+            onPress: async () => {
+                try {
+                    await removeProduct(paintItem.id);
+                    setData((oldData) => (
+                        oldData.filter((item) => item.id !== paintItem.id)
+                    ));
+
+                } catch (error) {
+
+                    Alert.alert('Não foi possível excluir o produto 🥺');
+                    console.log(error.message);
+                    
+                }
+            }
+        }
+    ]);
+    }
+
     return (
         <View>
 
@@ -74,6 +100,7 @@ export default function Paint() {
                                     description={paintItem.description}
                                     date={paintItem.date}
                                     key={paintItem.id}
+                                    handleRemove={() => {handleRemove(paintItem)}}
                                 />
 
                             )

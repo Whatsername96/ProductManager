@@ -4,31 +4,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { format } from 'date-fns';
 import images from '../styles/images';
 
-export interface ProductProps{
+export interface ProductProps {
     id: string;
     description: string;
     category: keyof typeof images;
     date: string;
 }
 
-interface StorageProductsProps{
+interface StorageProductsProps {
     [id: string]: {
         data: ProductProps
     }
 }
 
-export async function saveProduct(product: ProductProps) : Promise<void>{
+export async function saveProduct(product: ProductProps): Promise<void> {
     try {
         const data = await AsyncStorage.getItem('@productmanager:products');
         const oldProducts = data ? (JSON.parse(data) as StorageProductsProps) : {};
 
         const newProduct = {
-            [product.id] : {
+            [product.id]: {
                 data: product
             }
         }
 
-        await AsyncStorage.setItem('@productmanager:products', 
+        await AsyncStorage.setItem('@productmanager:products',
 
             JSON.stringify({
                 ...newProduct,
@@ -36,36 +36,48 @@ export async function saveProduct(product: ProductProps) : Promise<void>{
 
             }));
 
-    } catch(error){
+    } catch (error) {
 
         throw new Error(error);
     }
 }
 
-export async function loadProducts() : Promise<ProductProps[]>{
+export async function loadProducts(): Promise<ProductProps[]> {
     try {
         const data = await AsyncStorage.getItem('@productmanager:products');
         const products = data ? (JSON.parse(data) as StorageProductsProps) : {};
 
         const productsSorted = Object
-        .keys(products)
-        .map( product => {
-            return {
-                ...products[product].data,
-                date: format(new Date(products[product].data.date), 'dd/MM/yyyy')
-            }
-        })
-        .sort((a, b) =>
-            Math.floor(
-                new Date(a.date).getTime() / 1000 -
-                Math.floor(new Date(b.date).getTime() / 1000)
-            )
-        );
+            .keys(products)
+            .map(product => {
+                return {
+                    ...products[product].data,
+                    date: format(new Date(products[product].data.date), 'dd/MM/yyyy')
+                }
+            })
+            .sort((a, b) =>
+                Math.floor(
+                    new Date(a.date).getTime() / 1000 -
+                    Math.floor(new Date(b.date).getTime() / 1000)
+                )
+            );
 
         return productsSorted;
 
-    } catch(error){
+    } catch (error) {
 
         throw new Error(error);
     }
+}
+
+export async function removeProduct(id: string): Promise<void> {
+    const data = await AsyncStorage.getItem('@productmanager:products');
+    const products = data ? (JSON.parse(data) as StorageProductsProps) : {};
+
+    delete products[id];
+
+    await AsyncStorage.setItem(
+        '@productmanager:products',
+        JSON.stringify(products)
+    );
 }

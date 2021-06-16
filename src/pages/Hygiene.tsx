@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import EmptyCategory from '../components/EmptyCategory';
-import { loadProducts, ProductProps } from '../libs/storage';
+import { loadProducts, ProductProps, removeProduct } from '../libs/storage';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
@@ -43,6 +43,32 @@ export default function Hygiene() {
 
     selectHygieneData();
 
+    function handleRemove(hygieneItem: ProductProps) {
+        Alert.alert('Remover', `Deseja remover a ${hygieneItem.id}?`, [
+            {
+                text: 'Não',
+                style: 'cancel',
+            },
+            { 
+                text: 'Sim',
+                onPress: async () => {
+                    try {
+                        await removeProduct(hygieneItem.id);
+                        setData((oldData) => (
+                            oldData.filter((item) => item.id !== hygieneItem.id)
+                        ));
+
+                    } catch (error) {
+
+                        Alert.alert('Não foi possível excluir o produto 🥺');
+                        console.log(error.message);
+                        
+                    }
+                }
+            }
+        ]);
+    }
+
     return (
         <View>
 
@@ -74,6 +100,7 @@ export default function Hygiene() {
                                     description={hygieneItem.description}
                                     date={hygieneItem.date}
                                     key={hygieneItem.id}
+                                    handleRemove={() => {handleRemove(hygieneItem)}}
                                 />
 
                             )

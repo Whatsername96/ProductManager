@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
@@ -11,10 +12,30 @@ import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
 export default function Welcome() {
+
     const navigation = useNavigation();
+    const [name, setName] = useState<string>('');
+
+    useEffect(() => {
+        async function loadStorageUserName() {
+
+            try {
+                const user = await AsyncStorage.getItem('@productmanager:user');
+                setName(user || '');
+            } catch (error) {
+                console.log(error);
+            }
+
+        }
+        loadStorageUserName();
+    }, []);
 
     function handleNavigateToUserIdentification(){
         navigation.navigate('UserIdentification');
+    }
+
+    function handleNavigateToCategory(){
+        navigation.navigate('Category');
     }
 
 return (
@@ -48,7 +69,7 @@ return (
             <TouchableOpacity 
             style={styles.button}
             activeOpacity={0.7}
-            onPress={handleNavigateToUserIdentification}
+            onPress={ name == '' ? handleNavigateToUserIdentification : handleNavigateToCategory}
             >
                 <Feather name='chevron-right' size={24} color="#FFF" />
             </TouchableOpacity>

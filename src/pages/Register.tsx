@@ -128,7 +128,12 @@ export default function Register() {
                 description: description || '',
                 category: category || '',
                 date: date.toString() || new Date().toString(),
-            })
+            });
+
+            setName('');
+            setDescription('');
+            setCategory('food');
+            setDate(new Date());
 
         } catch (error) {
             setErrorMessage(error.message);

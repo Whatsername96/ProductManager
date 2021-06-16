@@ -4,9 +4,7 @@ import {
     Text,
     Image,
     ImageSourcePropType,
-    View,
-    TouchableOpacity,
-    TouchableOpacityProps
+    View
 } from 'react-native';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
@@ -15,36 +13,43 @@ import { Feather } from '@expo/vector-icons';
 
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
+import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 
-interface BotaoLinguagemCorporalProps extends TouchableOpacityProps {
+interface BotaoLinguagemCorporalProps extends RectButtonProps {
     title: string;
     image: ImageSourcePropType;
     description: string;
     date: string;
+    handleRemove: () => void; 
 }
 
-export default function Card({ title, image, description, date, ...rest }: BotaoLinguagemCorporalProps) {
-
-    function RightActions() {
-        return (
-            <TouchableOpacity 
-                style={styles.containerButton}
-                activeOpacity={0.7} 
-                {...rest}
-            >
-                <Feather
-                    name="trash"
-                    color="#FFF"
-                    size={24}
-                />
-            </TouchableOpacity>
-        );
-    }
+export default function Card({ title, image, description, date, handleRemove, ...rest }: BotaoLinguagemCorporalProps) {
 
     
 
+    function RightActions() {
+        return (
+            <RectButton
+                style={styles.containerButton}
+                activeOpacity={0.7}
+                onPress={handleRemove}
+                {...rest}
+            >
+                <Feather
+                    name={"trash"}
+                    color={colors.background}
+                    size={32}
+                />
+            </RectButton>
+        );
+    }
+
     return (
-        <Swipeable renderRightActions={RightActions} containerStyle={styles.container}>
+        <Swipeable
+            overshootRight={false}
+            renderRightActions={RightActions}
+            containerStyle={styles.container}
+        >
             <View style={styles.content}>
                 <Image source={image} resizeMode={'contain'} style={styles.image} />
                 <View style={styles.containerTexts}>
@@ -65,10 +70,11 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         height: 120,
-        borderWidth: 1,        
+        borderWidth: 1,
         borderColor: colors.theme,
         borderRadius: 10,
         marginBottom: 10,
+        elevation: 10,
     },
 
     content: {
@@ -129,8 +135,9 @@ const styles = StyleSheet.create({
 
     containerButton: {
         backgroundColor: colors.theme,
-        width: '15%',
+        width: '20%',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative'
     }
 });

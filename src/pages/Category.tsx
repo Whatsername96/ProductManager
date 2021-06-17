@@ -12,8 +12,6 @@ import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 import images from '../styles/images';
 
-const alturaStatusBar = StatusBarReact.currentHeight || 0;
-
 export default function Category() {
 
     const navigation = useNavigation();
@@ -83,6 +81,7 @@ export default function Category() {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         height: Dimensions.get('window').height,
         backgroundColor: colors.background,
     },
@@ -111,6 +110,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         width: '100%',
         paddingHorizontal: 20,
-        marginBottom: alturaStatusBar + 10,
+        marginBottom: 20,
     }
 });

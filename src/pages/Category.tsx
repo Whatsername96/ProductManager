@@ -1,31 +1,37 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, BackHandler, StatusBar as StatusBarReact } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
 
 import Header from '../components/Header';
 import ButtonCategory from '../components/ButtonCategory';
+import Button from '../components/Button';
 
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 import images from '../styles/images';
 
+const alturaStatusBar = StatusBarReact.currentHeight || 0;
+
 export default function Category() {
+
+    const navigation = useNavigation();
+    
 
     useEffect(() => {
         //Não permite que o usuário volte à tela anterior
         BackHandler.addEventListener('hardwareBackPress', () => true)
         return () =>
-          BackHandler.removeEventListener('hardwareBackPress', () => true)
-      }, [])
+            BackHandler.removeEventListener('hardwareBackPress', () => true)
+    }, [])
 
-    const navigation = useNavigation();
+    function handleNavigateToRegister() {
+        navigation.navigate('Register');
+    }
 
     return (
-
-        <View>
-
+        <>
             <StatusBar
                 style={'light'}
                 backgroundColor={colors.theme}
@@ -33,55 +39,50 @@ export default function Category() {
                 hidden={false}
             />
 
-            <Header title={''} showBack={false} showCalendar={true}/>
+            <Header title={''} showBack={false} showCalendar={true} />
 
-            <ScrollView 
-                showsHorizontalScrollIndicator={false}
-            >
+            <View style={styles.container}>
 
-                <View style={styles.container}>
+                <Text style={styles.text}>
+                    Selecione uma categoria para ver{'\n'}
+                    os produtos cadastrados ou{'\n'}
+                    cadastre um novo
+                </Text>
 
-                    <Text style={styles.text}>
-                        Selecione uma categoria para ver{'\n'}
-                        os produtos cadastrados ou{'\n'}
-                        cadastre um novo
-                    </Text>
+                <View style={styles.categoryColumn}>
 
-                    <View style={styles.categoryColumn}>
+                    <View style={styles.categoryLineOne}>
+                        <ButtonCategory title={'Alimentos'} image={images.food} onPress={() => navigation.navigate('Food')} />
+                        <ButtonCategory title={'Bebidas'} image={images.drinks} onPress={() => navigation.navigate('Drinks')} />
+                        <ButtonCategory title={'Cosméticos'} image={images.cosmetics} onPress={() => navigation.navigate('Cosmetics')} />
+                    </View>
 
-                        <View style={styles.categoryLineOne}>
-                            <ButtonCategory title={'Alimentos'} image={images.food} onPress={ () => navigation.navigate('Food') }/>
-                            <ButtonCategory title={'Bebidas'} image={images.drinks} onPress={ () => navigation.navigate('Drinks') }/>
-                            <ButtonCategory title={'Cosméticos'} image={images.cosmetics} onPress={ () => navigation.navigate('Cosmetics') }/>
-                        </View>
+                    <View style={styles.categoryLineOne}>
+                        <ButtonCategory title={'Higiene'} image={images.hygiene} onPress={() => navigation.navigate('Hygiene')} />
+                        <ButtonCategory title={'Limpeza'} image={images.cleaning} onPress={() => navigation.navigate('Cleaning')} />
+                        <ButtonCategory title={'Outros'} image={images.others} onPress={() => navigation.navigate('Others')} />
+                    </View>
 
-                        <View style={styles.categoryLineOne}>
-                            <ButtonCategory title={'Higiene'} image={images.hygiene} onPress={ () => navigation.navigate('Hygiene') }/>
-                            <ButtonCategory title={'Limpeza'} image={images.cleaning} onPress={ () => navigation.navigate('Cleaning') }/>
-                            <ButtonCategory title={'Outros'} image={images.others} onPress={ () => navigation.navigate('Others') }/>
-                        </View>
-
-                        <View style={styles.categoryLineOne}>
-                            <ButtonCategory title={'Pets'} image={images.pets} onPress={ () => navigation.navigate('Pets') }/>
-                            <ButtonCategory title={'Remédios'} image={images.medicine} onPress={ () => navigation.navigate('Medicine') }/>
-                            <ButtonCategory title={'Tintas'} image={images.paint} onPress={ () => navigation.navigate('Paint') }/>
-                        </View>
-
+                    <View style={styles.categoryLineOne}>
+                        <ButtonCategory title={'Pets'} image={images.pets} onPress={() => navigation.navigate('Pets')} />
+                        <ButtonCategory title={'Remédios'} image={images.medicine} onPress={() => navigation.navigate('Medicine')} />
+                        <ButtonCategory title={'Tintas'} image={images.paint} onPress={() => navigation.navigate('Paint')} />
                     </View>
 
                 </View>
 
-            </ScrollView>
+                <View style={styles.footer}>
+                    <Button title={'Cadastrar Produto'} onPress={handleNavigateToRegister} />
+                </View>
 
-        </View>
+            </View>
+        </>
 
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        width: '100%',
         height: Dimensions.get('window').height,
         backgroundColor: colors.background,
     },
@@ -94,7 +95,6 @@ const styles = StyleSheet.create({
     },
 
     categoryColumn: {
-        height: 120,
         width: '100%',
     },
 
@@ -104,5 +104,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         paddingVertical: 10,
         width: '100%',
+    },
+
+    footer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        width: '100%',
+        paddingHorizontal: 20,
+        marginBottom: alturaStatusBar + 10,
     }
 });

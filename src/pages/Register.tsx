@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 
-import { 
-    StyleSheet, 
-    SafeAreaView , 
-    View, 
-    KeyboardAvoidingView, 
-    Platform, 
-    TouchableWithoutFeedback, 
-    Keyboard, 
-    TextInput, 
-    Image, 
-    Alert, 
-    TouchableOpacity, 
-    Text, 
-    NativeModules, 
-    Dimensions } from 'react-native';
+import {
+    StyleSheet,
+    SafeAreaView,
+    View,
+    KeyboardAvoidingView,
+    Platform,
+    TouchableWithoutFeedback,
+    Keyboard,
+    TextInput,
+    Image,
+    Alert,
+    TouchableOpacity,
+    Text,
+    NativeModules,
+    Dimensions
+} from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
@@ -71,6 +72,7 @@ export default function Register() {
     const [modalVisible, setModalVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
+
     function handleInputBlurName() {
         setFocusedName(false);
         setIsFilledName(!!name)
@@ -104,39 +106,60 @@ export default function Register() {
     }
 
     function handleChangeDate(event: Event, dateTime: Date | undefined) {
+
         if (Platform.OS == 'android') {
             setShowDatePicker(oldState => !oldState);
         }
 
-        if (dateTime && isBefore(dateTime, new Date())) {
-            setDate(new Date());
-            return Alert.alert('Escolha uma data no futuro!');
-        }
+        // if (dateTime && isBefore(dateTime, new Date())) {
+        //     return Alert.alert('Escolha uma data no futuro!');
+        // } else {
 
-        if (dateTime) {
-            setDate(dateTime);
-            setIsFilledDate(true);
-        }
+        //     if (dateTime) {
+        //         setDate(new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate()));
+        //         setIsFilledDate(true);
+        //     }
+        // }
     }
 
     async function handleSave() {
+        let error = false;
 
-        try {
+        if (name.trim() === '') {
+            error = true;
+        }
 
-            await saveProduct({
-                id: name || '',
-                description: description || '',
-                category: category || '',
-                date: date.toString() || new Date().toString(),
-            });
+        if (description.trim() === '') {
+            error = true;
+        }
 
-            setName('');
-            setDescription('');
-            setCategory('food');
-            setDate(new Date());
+        // if (date && isBefore(date, new Date())) {
+        //     error = true;
+        // }
 
-        } catch (error) {
-            setErrorMessage(error.message);
+        if (error) {
+            return Alert.alert('Dados inválidos no formulário');
+        } else {
+
+            try {
+
+                await saveProduct({
+                    id: name || '',
+                    description: description || '',
+                    category: category || '',
+                    date: date.toString() || new Date().toString(),
+                });
+
+                setName('');
+                setDescription('');
+                setCategory('food');
+                setDate(new Date());
+
+            } catch (error) {
+                setErrorMessage(error.message);
+            }
+
+            setModalVisible(true);
         }
     }
 
@@ -157,8 +180,8 @@ export default function Register() {
                 />
                 <Header title={'Cadastrar'} showBack={true} showCalendar={false} />
 
-                <SafeAreaView  
-                style={styles.containerScrollView}
+                <SafeAreaView
+                    style={styles.containerScrollView}
                 >
 
                     <View style={styles.content}>
@@ -219,7 +242,7 @@ export default function Register() {
                             selectedItemContainerStyle={styles.selectedItemContainer}
                             selectedItemLabelStyle={styles.selectedItemLabel}
                         />
-                        
+
                         {showDatePicker && (
                             <DateTimePicker
                                 value={date}
@@ -245,7 +268,7 @@ export default function Register() {
 
                             <Button
                                 title="Cadastrar Produto"
-                                onPress={() => { handleSave(); setModalVisible(true) }}
+                                onPress={() => { handleSave() }}
                             />
 
                         </View>

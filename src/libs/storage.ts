@@ -1,6 +1,8 @@
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import * as Notifications from 'expo-notifications';
+
 import { format } from 'date-fns';
 import images from '../styles/images';
 
@@ -13,18 +15,44 @@ export interface ProductProps {
 
 interface StorageProductsProps {
     [id: string]: {
-        data: ProductProps
+        data: ProductProps,
+        notificationId: string
     }
 }
 
 export async function saveProduct(product: ProductProps): Promise<void> {
     try {
+
+        const day = new Date(product.date);
+        const now =  new Date();
+
+        const seconds = Math.abs(
+            Math.ceil((now.getTime() - day.getTime()) / 1000)
+        );
+
+        const notificationId = await Notifications.scheduleNotificationAsync({
+            content: {
+                title: 'Heeey 🗓️',
+                body: `O produto ${product.id} vence hoje!`,
+                sound: true,
+                priority: Notifications.AndroidNotificationPriority.HIGH,
+                data: {
+                    product
+                },
+            },
+            trigger: {
+                seconds: seconds < 60 ? 60 : seconds,
+
+            }
+        })
+
         const data = await AsyncStorage.getItem('@productmanager:products');
         const oldProducts = data ? (JSON.parse(data) as StorageProductsProps) : {};
 
         const newProduct = {
             [product.id]: {
-                data: product
+                data: product,
+                notificationId,
             }
         }
 

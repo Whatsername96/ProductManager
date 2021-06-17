@@ -37,3 +37,6 @@ ou
 
 # Async Storage
 >yarn add @react-native-async-storage/async-storage
+
+# Animações de carregamento
+>yarn add lottie-react-native

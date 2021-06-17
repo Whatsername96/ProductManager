@@ -20,12 +20,10 @@ interface BotaoLinguagemCorporalProps extends RectButtonProps {
     image: ImageSourcePropType;
     description: string;
     date: string;
-    handleRemove: () => void; 
+    handleRemove: () => void;
 }
 
 export default function Card({ title, image, description, date, handleRemove, ...rest }: BotaoLinguagemCorporalProps) {
-
-    
 
     function RightActions() {
         return (
@@ -56,9 +54,13 @@ export default function Card({ title, image, description, date, handleRemove, ..
                     <Text style={styles.title}>{title}</Text>
                     <Text style={styles.text}>{description}</Text>
                 </View>
+
                 <View style={styles.containerDate}>
                     <Text style={styles.titleDate}>Valido até:</Text>
                     <Text style={styles.textDate}>{date}</Text>
+                </View>
+                <View style={styles.containerIcon}>
+                    <Feather name={'chevron-left'} size={30} color={colors.gray} />
                 </View>
             </View>
         </Swipeable>
@@ -84,16 +86,19 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         alignItems: 'center',
+        paddingHorizontal: 10,
     },
 
     image: {
         width: '15%',
-        marginHorizontal: 10,
+        height: '100%',
     },
 
     containerTexts: {
-        width: '45%',
-        marginRight: 20,
+        width: '40%',
+        height: '100%',
+        justifyContent: 'center',
+        marginHorizontal: 10,
     },
 
     title: {
@@ -113,8 +118,10 @@ const styles = StyleSheet.create({
     },
 
     containerDate: {
-        paddingHorizontal: 20,
-        width: '40%'
+        width: '25%',
+        height: '100%',
+        justifyContent: 'center',
+        marginHorizontal: 10,
     },
 
     titleDate: {
@@ -131,6 +138,12 @@ const styles = StyleSheet.create({
         fontFamily: fonts.text,
         color: colors.text,
         paddingBottom: 5,
+    },
+
+    containerIcon: {
+        justifyContent: 'center',
+        width: '28%',
+        height: '100%',
     },
 
     containerButton: {

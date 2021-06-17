@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import { loadProducts, ProductProps, removeProduct } from '../libs/storage';
+import { Load } from '../components/Load';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
@@ -13,8 +14,10 @@ import fonts from '../styles/fonts';
 
 export default function Expired() {
 
+    const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductProps[]>([]);
     const expired: ProductProps[] = [];
+    
 
     useEffect(() => {
 
@@ -27,6 +30,7 @@ export default function Expired() {
 
                 return Alert.alert('Não foi possível carregar os produtos dessa categoria 🥺');
             }
+            setLoading(false);
         }
 
         getData();
@@ -71,6 +75,10 @@ export default function Expired() {
                 }
             }
         ]);
+    }
+
+    if(loading){
+        return <Load />
     }
 
     return (

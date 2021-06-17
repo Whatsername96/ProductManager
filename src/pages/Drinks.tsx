@@ -7,12 +7,14 @@ import Header from '../components/Header';
 import Card from '../components/Card';
 import EmptyCategory from '../components/EmptyCategory';
 import { loadProducts, ProductProps, removeProduct } from '../libs/storage';
+import { Load } from '../components/Load';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
 
 export default function Drinks() {
 
+    const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductProps[]>([]);
     const drinks: ProductProps[] = [];
 
@@ -27,6 +29,7 @@ export default function Drinks() {
 
                 return Alert.alert('Não foi possível carregar os produtos dessa categoria 🥺');
             }
+            setLoading(false);
         }
 
         getData();
@@ -67,6 +70,10 @@ export default function Drinks() {
                 }
             }
         ]);
+    }
+
+    if(loading){
+        return <Load />
     }
 
     return (

@@ -87,7 +87,7 @@ export default function Cleaning() {
                 hidden={false}
             />
 
-            <Header title={'Limpeza'} showBack={true} showCalendar={true} />
+            <Header title={'Limpeza'} showBack={true} showCalendar={false} />
 
             <View style={styles.container}>
 

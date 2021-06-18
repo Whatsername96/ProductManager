@@ -29,12 +29,6 @@ export default function UserIdentification() {
     const [name, setName] = useState<string>();
     const navigation = useNavigation();
 
-    useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => true)
-        return () =>
-            BackHandler.removeEventListener('hardwareBackPress', () => true)
-    }, [])
-
     function handleInputBlur() {
         setFocused(false);
         setIsFilled(!!name)
@@ -64,7 +58,7 @@ export default function UserIdentification() {
             return Alert.alert('Não foi possível salvar seu nome 🥺');
         }
 
-        navigation.navigate('Schedule');
+        navigation.navigate('Category');
     }
 
     return (
@@ -110,6 +104,7 @@ export default function UserIdentification() {
                                 onBlur={handleInputBlur}
                                 onFocus={handleInputFocus}
                                 onChangeText={handleInputChange}
+                                maxLength={15}
                             />
 
 

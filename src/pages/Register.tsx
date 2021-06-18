@@ -108,18 +108,29 @@ export default function Register() {
     function handleChangeDate(event: Event, dateTime: Date | undefined) {
 
         if (Platform.OS == 'android') {
+
             setShowDatePicker(oldState => !oldState);
         }
 
-        // if (dateTime && isBefore(dateTime, new Date())) {
-        //     return Alert.alert('Escolha uma data no futuro!');
-        // } else {
+        if (dateTime) {
 
-        //     if (dateTime) {
-        //         setDate(new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate()));
-        //         setIsFilledDate(true);
-        //     }
-        // }
+            let datePicker = new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate());
+            let now = new Date();
+            let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            if (isBefore(datePicker, today)) {
+
+                return Alert.alert('Escolha uma data no futuro!');
+
+            } else {
+                
+                if (dateTime) {
+
+                    setDate(new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate()));
+                    setIsFilledDate(true);
+                }
+            }
+        }
     }
 
     async function handleSave() {
@@ -133,12 +144,18 @@ export default function Register() {
             error = true;
         }
 
-        // if (date && isBefore(date, new Date())) {
-        //     error = true;
-        // }
+        let datePicker = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        let now = new Date();
+        let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        if (isBefore(datePicker, today)) {
+            error = true;
+        }
 
         if (error) {
+
             return Alert.alert('Dados inválidos no formulário');
+
         } else {
 
             try {

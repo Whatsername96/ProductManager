@@ -87,7 +87,7 @@ export default function Food() {
                 hidden={false}
             />
 
-            <Header title={'Alimentos'} showBack={true} showCalendar={true} />
+            <Header title={'Alimentos'} showBack={true} showCalendar={false} />
 
             <View style={styles.container}>
 

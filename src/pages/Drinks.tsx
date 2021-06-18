@@ -86,7 +86,7 @@ export default function Drinks() {
                 hidden={false}
             />
 
-            <Header title={'Bebidas'} showBack={true} showCalendar={true} />
+            <Header title={'Bebidas'} showBack={true} showCalendar={false} />
 
             <View style={styles.container}>
 

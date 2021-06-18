@@ -86,7 +86,7 @@ export default function Medicine() {
                 hidden={false}
             />
 
-            <Header title={'Remédios'} showBack={true} showCalendar={true} />
+            <Header title={'Remédios'} showBack={true} showCalendar={false} />
 
             <View style={styles.container}>
 

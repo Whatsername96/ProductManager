@@ -17,12 +17,12 @@ export default function Category() {
     const navigation = useNavigation();
     
 
-    useEffect(() => {
-        //Não permite que o usuário volte à tela anterior
-        BackHandler.addEventListener('hardwareBackPress', () => true)
-        return () =>
-            BackHandler.removeEventListener('hardwareBackPress', () => true)
-    }, [])
+    // useEffect(() => {
+    //     //Não permite que o usuário volte à tela anterior
+    //     BackHandler.addEventListener('hardwareBackPress', () => true)
+    //     return () =>
+    //         BackHandler.removeEventListener('hardwareBackPress', () => true)
+    // }, [])
 
     function handleNavigateToRegister() {
         navigation.navigate('Register');
@@ -37,7 +37,7 @@ export default function Category() {
                 hidden={false}
             />
 
-            <Header title={''} showBack={false} showCalendar={true} />
+            <Header title={''} showBack={true} showCalendar={true} />
 
             <View style={styles.container}>
 

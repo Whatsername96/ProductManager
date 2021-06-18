@@ -85,7 +85,7 @@ export default function Cosmetics() {
                     translucent={false}
                     hidden={false}
                 />
-                <Header title={'Cosméticos'} showBack={true} showCalendar={true} />
+                <Header title={'Cosméticos'} showBack={true} showCalendar={false} />
 
                 <View style={styles.container}>
 

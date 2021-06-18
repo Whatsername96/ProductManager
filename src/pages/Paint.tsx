@@ -86,7 +86,7 @@ export default function Paint() {
                 hidden={false}
             />
 
-            <Header title={'Tintas'} showBack={true} showCalendar={true} />
+            <Header title={'Tintas'} showBack={true} showCalendar={false} />
 
             <View style={styles.container}>
 

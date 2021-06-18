@@ -86,7 +86,7 @@ export default function Pets() {
                 hidden={false}
             />
 
-            <Header title={'Pets'} showBack={true} showCalendar={true} />
+            <Header title={'Pets'} showBack={true} showCalendar={false} />
 
             <View style={styles.container}>
 

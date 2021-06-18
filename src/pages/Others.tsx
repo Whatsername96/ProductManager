@@ -86,7 +86,7 @@ export default function Others() {
                 hidden={false}
             />
 
-            <Header title={'Outros'} showBack={true} showCalendar={true} />
+            <Header title={'Outros'} showBack={true} showCalendar={false} />
 
             <View style={styles.container}>
 

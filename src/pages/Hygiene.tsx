@@ -86,7 +86,7 @@ export default function Hygiene() {
                 hidden={false}
             />
 
-            <Header title={'Higiene'} showBack={true} showCalendar={true} />
+            <Header title={'Higiene'} showBack={true} showCalendar={false} />
 
             <View style={styles.container}>
 

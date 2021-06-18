@@ -36,7 +36,7 @@ export default function ModalApp({
                 transparent={true}
                 visible={modal}
                 onRequestClose={() => {
-                    navigation.goBack();
+                    navigation.navigate('Category');
                 }}
             >
                 <View style={styles.modalContainer}>
@@ -49,7 +49,7 @@ export default function ModalApp({
                         <TouchableOpacity
                             activeOpacity={0.7}
                             style={styles.modalButton}
-                            onPress={() => { close(!modal); navigation.goBack() }}
+                            onPress={() => { close(!modal); navigation.navigate('Category'); }}
                         >
                             <Text style={styles.modalButtonText}>Ok</Text>
                         </TouchableOpacity>

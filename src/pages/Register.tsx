@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
     StyleSheet,
@@ -16,7 +16,7 @@ import {
     NativeModules,
     Dimensions
 } from 'react-native';
-
+import { useRoute } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 
@@ -33,9 +33,18 @@ import colors from '../styles/colors';
 import images from '../styles/images';
 import fonts from '../styles/fonts';
 
-import { saveProduct } from '../libs/storage';
+import { removeProduct, saveProduct } from '../libs/storage';
+
+interface ProductDetailsParams {
+    id: string;
+    description: string;
+    date: string;
+}
 
 export default function Register() {
+
+    const route = useRoute();
+    const params = route.params as ProductDetailsParams;
 
     const { StatusBarManager } = NativeModules;
     const alturaStatusBar = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
@@ -72,6 +81,17 @@ export default function Register() {
     const [modalVisible, setModalVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
+    useEffect(() => {
+
+        if (params) {
+            setName(params.id);
+            setDescription(params.description);
+
+            let partsDay = params.date.split('/');
+            setDate(new Date(parseInt(partsDay[2]), parseInt(partsDay[1]) - 1, parseInt(partsDay[0])));
+        }
+
+    }, []);
 
     function handleInputBlurName() {
         setFocusedName(false);
@@ -123,7 +143,7 @@ export default function Register() {
                 return Alert.alert('Escolha uma data no futuro!');
 
             } else {
-                
+
                 if (dateTime) {
 
                     setDate(new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate()));
@@ -158,6 +178,17 @@ export default function Register() {
 
         } else {
 
+            if (params) {
+                try {
+
+                    await removeProduct(params.id);
+
+                } catch (error) {
+
+                    console.log(error.message);
+                }
+            }
+
             try {
 
                 await saveProduct({
@@ -173,6 +204,7 @@ export default function Register() {
                 setDate(new Date());
 
             } catch (error) {
+
                 setErrorMessage(error.message);
             }
 

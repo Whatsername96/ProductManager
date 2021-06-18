@@ -6,6 +6,7 @@ import {
     ImageSourcePropType,
     View
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
@@ -13,9 +14,10 @@ import { Feather } from '@expo/vector-icons';
 
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
+import { RectButton } from 'react-native-gesture-handler';
 
-interface BotaoLinguagemCorporalProps extends RectButtonProps {
+
+interface BotaoLinguagemCorporalProps {
     title: string;
     image: ImageSourcePropType;
     description: string;
@@ -23,7 +25,9 @@ interface BotaoLinguagemCorporalProps extends RectButtonProps {
     handleRemove: () => void;
 }
 
-export default function Card({ title, image, description, date, handleRemove, ...rest }: BotaoLinguagemCorporalProps) {
+export default function Card({ title, image, description, date, handleRemove }: BotaoLinguagemCorporalProps) {
+
+    const navigation = useNavigation();
 
     function RightActions() {
         return (
@@ -31,7 +35,6 @@ export default function Card({ title, image, description, date, handleRemove, ..
                 style={styles.containerButton}
                 activeOpacity={0.7}
                 onPress={handleRemove}
-                {...rest}
             >
                 <Feather
                     name={"trash"}
@@ -48,7 +51,15 @@ export default function Card({ title, image, description, date, handleRemove, ..
             renderRightActions={RightActions}
             containerStyle={styles.container}
         >
-            <View style={styles.content}>
+            <RectButton 
+            style={styles.content}
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('Register', {
+                id: title,
+                description: description,
+                date: date,
+            } )}
+            >
                 <Image source={image} resizeMode={'contain'} style={styles.image} />
                 <View style={styles.containerTexts}>
                     <Text style={styles.title}>{title}</Text>
@@ -62,7 +73,7 @@ export default function Card({ title, image, description, date, handleRemove, ..
                 <View style={styles.containerIcon}>
                     <Feather name={'chevron-left'} size={30} color={colors.gray} />
                 </View>
-            </View>
+            </RectButton>
         </Swipeable>
 
     );

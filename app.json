@@ -35,9 +35,6 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.mycompany.productmanager"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     }
   }
 }

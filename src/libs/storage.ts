@@ -26,10 +26,13 @@ export async function saveProduct(product: ProductProps): Promise<void> {
         const day = new Date(product.date);
         const now =  new Date();
 
-        const seconds = Math.abs(
-            Math.ceil((now.getTime() - day.getTime()) / 1000)
-        );
+        const date = new Date(day.getFullYear(), day.getMonth(), day.getDate());
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
+        const seconds = Math.abs(
+            Math.ceil((today.getTime() - date.getTime()) / 1000)
+        );
+        
         const notificationId = await Notifications.scheduleNotificationAsync({
             content: {
                 title: 'Heeey 🗓️',
@@ -80,7 +83,6 @@ export async function loadProducts(): Promise<ProductProps[]> {
             .map(product => {
                 return {
                     ...products[product].data,
-                    date: format(new Date(products[product].data.date), 'dd/MM/yyyy')
                 }
             })
             .sort((a, b) =>

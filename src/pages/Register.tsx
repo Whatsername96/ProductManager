@@ -86,9 +86,7 @@ export default function Register() {
         if (params) {
             setName(params.id);
             setDescription(params.description);
-
-            let partsDay = params.date.split('/');
-            setDate(new Date(parseInt(partsDay[2]), parseInt(partsDay[1]) - 1, parseInt(partsDay[0])));
+            setDate(new Date(params.date));
         }
 
     }, []);
@@ -133,22 +131,17 @@ export default function Register() {
         }
 
         if (dateTime) {
-
-            let datePicker = new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate());
             let now = new Date();
             let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-            if (isBefore(datePicker, today)) {
+            if (isBefore(dateTime, today)) {
 
                 return Alert.alert('Escolha uma data no futuro!');
 
             } else {
 
-                if (dateTime) {
+                setDate(dateTime);
+                setIsFilledDate(true);
 
-                    setDate(new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate()));
-                    setIsFilledDate(true);
-                }
             }
         }
     }
@@ -164,11 +157,9 @@ export default function Register() {
             error = true;
         }
 
-        let datePicker = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         let now = new Date();
         let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-        if (isBefore(datePicker, today)) {
+        if (isBefore(date, today)) {
             error = true;
         }
 

@@ -10,6 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
+import { format } from 'date-fns';
+
 import { Feather } from '@expo/vector-icons';
 
 import colors from '../styles/colors';
@@ -28,6 +30,8 @@ interface BotaoLinguagemCorporalProps {
 export default function Card({ title, image, description, date, handleRemove }: BotaoLinguagemCorporalProps) {
 
     const navigation = useNavigation();
+
+    const day = format(new Date(date), 'dd/MM/yyyy');
 
     function RightActions() {
         return (
@@ -68,7 +72,7 @@ export default function Card({ title, image, description, date, handleRemove }: 
 
                 <View style={styles.containerDate}>
                     <Text style={styles.titleDate}>Valido até:</Text>
-                    <Text style={styles.textDate}>{date}</Text>
+                    <Text style={styles.textDate}>{day}</Text>
                 </View>
                 <View style={styles.containerIcon}>
                     <Feather name={'chevron-left'} size={30} color={colors.gray} />

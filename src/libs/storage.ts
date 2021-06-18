@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as Notifications from 'expo-notifications';
 
-import { format } from 'date-fns';
 import images from '../styles/images';
 
 export interface ProductProps {
@@ -32,7 +31,7 @@ export async function saveProduct(product: ProductProps): Promise<void> {
         const seconds = Math.abs(
             Math.ceil((today.getTime() - date.getTime()) / 1000)
         );
-        
+
         const notificationId = await Notifications.scheduleNotificationAsync({
             content: {
                 title: 'Heeey 🗓️',

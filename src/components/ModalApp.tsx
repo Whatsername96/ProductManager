@@ -10,6 +10,7 @@ interface ModalAppProps {
     close: Function;
     title: string;
     description?: string;
+    route: string;
 }
 
 export default function ModalApp({
@@ -17,6 +18,7 @@ export default function ModalApp({
     close,
     title,
     description,
+    route,
 }: ModalAppProps) {
 
     const [modal, setModal] = useState(false);
@@ -36,7 +38,7 @@ export default function ModalApp({
                 transparent={true}
                 visible={modal}
                 onRequestClose={() => {
-                    
+                    route != '' ? navigation.navigate(route) : {};
                 }}
             >
                 <View style={styles.modalContainer}>
@@ -49,7 +51,7 @@ export default function ModalApp({
                         <TouchableOpacity
                             activeOpacity={0.7}
                             style={styles.modalButton}
-                            onPress={() => { close(!modal); }}
+                            onPress={() => { close(!modal); route != '' ? navigation.navigate(route) : {}}}
                         >
                             <Text style={styles.modalButtonText}>Ok</Text>
                         </TouchableOpacity>

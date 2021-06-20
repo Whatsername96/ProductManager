@@ -86,7 +86,12 @@ export default function Register() {
         if (params) {
             setName(params.id);
             setDescription(params.description);
-            setDate(new Date(params.date));
+
+            if (!isBefore(new Date(params.date), new Date())) {
+                setDate(new Date(params.date));
+            } else {
+                setDate(new Date());
+            }
         }
 
     }, []);
@@ -131,16 +136,26 @@ export default function Register() {
         }
 
         if (dateTime) {
+
             let now = new Date();
-            let today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+            let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
             if (isBefore(dateTime, today)) {
 
                 return Alert.alert('Escolha uma data no futuro!');
 
             } else {
+                let dateTimeComp = new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate());
 
-                setDate(dateTime);
-                setIsFilledDate(true);
+                if (dateTimeComp == today) {
+
+                    setDate(new Date());
+
+                } else {
+
+                    setDate(dateTime);
+                    setIsFilledDate(true);
+                }
 
             }
         }
@@ -197,7 +212,6 @@ export default function Register() {
             } catch (error) {
 
                 setErrorMessage(error.message);
-                console.log(error.message);
             }
 
             setModalVisible(true);
@@ -322,12 +336,14 @@ export default function Register() {
                             close={() => setModalVisible(false)}
                             title={'😄'}
                             description={'Produto salvo com sucesso!'}
+                            route={'Category'}
                         /> :
                         <ModalApp
                             show={modalVisible}
                             close={() => setModalVisible(false)}
                             title={'😕'}
                             description={'Ocorreu um erro. Tente mudar o nome do produto.'}
+                            route={''}
                         />
                     }
                 </SafeAreaView >

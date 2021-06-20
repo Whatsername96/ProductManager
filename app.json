@@ -15,7 +15,7 @@
         "expo-notifications",
         {
           "icon": "./assets/logo-notification.png",
-          "color": "transparent",
+          "color": "#ffffff",
           "mode": "production"
         }
       ]

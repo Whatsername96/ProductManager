@@ -132,7 +132,7 @@ export default function Register() {
 
         if (dateTime) {
             let now = new Date();
-            let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            let today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
             if (isBefore(dateTime, today)) {
 
                 return Alert.alert('Escolha uma data no futuro!');
@@ -197,6 +197,7 @@ export default function Register() {
             } catch (error) {
 
                 setErrorMessage(error.message);
+                console.log(error.message);
             }
 
             setModalVisible(true);

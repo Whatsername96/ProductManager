@@ -23,15 +23,11 @@ export async function saveProduct(product: ProductProps): Promise<void> {
     try {
 
         const day = new Date(product.date);
-        const now =  new Date();
-
-        const date = new Date(day.getFullYear(), day.getMonth(), day.getDate());
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const now = new Date();
 
         const seconds = Math.abs(
-            Math.ceil((today.getTime() - date.getTime()) / 1000)
+            Math.ceil((now.getTime() - day.getTime()) / 1000)
         );
-
         const notificationId = await Notifications.scheduleNotificationAsync({
             content: {
                 title: 'Heeey 🗓️',
@@ -51,20 +47,25 @@ export async function saveProduct(product: ProductProps): Promise<void> {
         const data = await AsyncStorage.getItem('@productmanager:products');
         const oldProducts = data ? (JSON.parse(data) as StorageProductsProps) : {};
 
-        const newProduct = {
-            [product.id]: {
-                data: product,
-                notificationId,
+        if (oldProducts[product.id]) {
+            throw new Error('Já existe o produto cadastrado');
+        } else {
+
+            const newProduct = {
+                [product.id]: {
+                    data: product,
+                    notificationId,
+                }
             }
+
+            await AsyncStorage.setItem('@productmanager:products',
+
+                JSON.stringify({
+                    ...newProduct,
+                    ...oldProducts
+
+                }));
         }
-
-        await AsyncStorage.setItem('@productmanager:products',
-
-            JSON.stringify({
-                ...newProduct,
-                ...oldProducts
-
-            }));
 
     } catch (error) {
 
@@ -103,6 +104,7 @@ export async function removeProduct(id: string): Promise<void> {
     const data = await AsyncStorage.getItem('@productmanager:products');
     const products = data ? (JSON.parse(data) as StorageProductsProps) : {};
 
+    await Notifications.cancelScheduledNotificationAsync(products[id].notificationId);
     delete products[id];
 
     await AsyncStorage.setItem(

@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 
 import { StatusBar } from 'expo-status-bar';
 
+import { isBefore } from 'date-fns';
+
 import Header from '../components/Header';
 import Card from '../components/Card';
 import { loadProducts, ProductProps, removeProduct } from '../libs/storage';
@@ -39,10 +41,8 @@ export default function Expired() {
 
     function selectExpiredData() {
         data.forEach((item => {
-            let partsDate = item.date.split('/');
-            let date = new Date(parseInt(partsDate[2]), parseInt(partsDate[1]) - 1, parseInt(partsDate[0]));
-            let hoje = new Date();
-            if ( date < new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) ) {
+            let date = new Date(item.date);
+            if(isBefore(date, new Date())) {
                 expired.push(item);
             }
         }));

@@ -47,7 +47,7 @@ export default function Paint() {
     selectPaintData();
 
    function handleRemove(paintItem: ProductProps) {
-    Alert.alert('Remover', `Deseja remover a ${paintItem.id}?`, [
+    Alert.alert('Remover', `Deseja remover ${paintItem.id}?`, [
         {
             text: 'Não',
             style: 'cancel',

@@ -47,7 +47,7 @@ export default function Others() {
     selectOthersData();
 
     function handleRemove(other: ProductProps){
-        Alert.alert('Remover', `Deseja remover a ${other.id}?`, [
+        Alert.alert('Remover', `Deseja remover ${other.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',

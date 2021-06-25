@@ -47,7 +47,7 @@ export default function Hygiene() {
     selectHygieneData();
 
     function handleRemove(hygieneItem: ProductProps) {
-        Alert.alert('Remover', `Deseja remover a ${hygieneItem.id}?`, [
+        Alert.alert('Remover', `Deseja remover ${hygieneItem.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',

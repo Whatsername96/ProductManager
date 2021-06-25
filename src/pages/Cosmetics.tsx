@@ -47,7 +47,7 @@ export default function Cosmetics() {
         selectCosmeticsData();
 
         function handleRemove(cosmetic: ProductProps){
-            Alert.alert('Remover', `Deseja remover a ${cosmetic.id}?`, [
+            Alert.alert('Remover', `Deseja remover ${cosmetic.id}?`, [
                 {
                     text: 'Não',
                     style: 'cancel',

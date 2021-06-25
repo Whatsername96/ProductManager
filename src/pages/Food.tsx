@@ -48,7 +48,7 @@ export default function Food() {
     selectFoodData();
 
     function handleRemove(food: ProductProps){
-        Alert.alert('Remover', `Deseja remover a ${food.id}?`, [
+        Alert.alert('Remover', `Deseja remover ${food.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',

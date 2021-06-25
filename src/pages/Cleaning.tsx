@@ -48,7 +48,7 @@ export default function Cleaning() {
     selectCleaningData();
 
     function handleRemove(cleaning: ProductProps) {
-        Alert.alert('Remover', `Deseja remover a ${cleaning.id}?`, [
+        Alert.alert('Remover', `Deseja remover ${cleaning.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',

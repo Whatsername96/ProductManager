@@ -47,7 +47,7 @@ export default function Medicine() {
     selectMedicineData();
 
     function handleRemove(medicineItem: ProductProps){
-        Alert.alert('Remover', `Deseja remover a ${medicineItem.id}?`, [
+        Alert.alert('Remover', `Deseja remover ${medicineItem.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',

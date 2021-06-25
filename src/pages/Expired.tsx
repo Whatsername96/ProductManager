@@ -52,7 +52,7 @@ export default function Expired() {
     selectExpiredData();
 
     function handleRemove(expiredItem: ProductProps) {
-        Alert.alert('Remover', `Deseja remover a ${expiredItem.id}?`, [
+        Alert.alert('Remover', `Deseja remover ${expiredItem.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',

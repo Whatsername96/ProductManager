@@ -47,7 +47,7 @@ export default function Drinks() {
     selectDrinksData();
 
     function handleRemove(drink: ProductProps){
-        Alert.alert('Remover', `Deseja remover a ${drink.id}?`, [
+        Alert.alert('Remover', `Deseja remover ${drink.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',

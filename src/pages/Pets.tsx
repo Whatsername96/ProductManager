@@ -47,7 +47,7 @@ export default function Pets() {
     selectPetsData();
 
     function handleRemove(pet : ProductProps) {
-        Alert.alert('Remover', `Deseja remover a ${pet.id}?`, [
+        Alert.alert('Remover', `Deseja remover ${pet.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',

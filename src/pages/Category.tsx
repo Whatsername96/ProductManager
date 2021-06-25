@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, BackHandler, StatusBar as StatusBarReact } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
@@ -15,7 +15,6 @@ import images from '../styles/images';
 export default function Category() {
 
     const navigation = useNavigation();
-    
 
     // useEffect(() => {
     //     //Não permite que o usuário volte à tela anterior
@@ -39,7 +38,7 @@ export default function Category() {
 
             <Header title={''} showBack={true} showCalendar={true} />
 
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
 
                 <Text style={styles.text}>
                     Selecione uma categoria para ver{'\n'}
@@ -68,11 +67,10 @@ export default function Category() {
                     </View>
 
                 </View>
+            </ScrollView>
 
-                <View style={styles.footer}>
-                    <Button title={'Cadastrar Produto'} onPress={handleNavigateToRegister} />
-                </View>
-
+            <View style={styles.footer}>
+                <Button title={'Cadastrar Produto'} onPress={handleNavigateToRegister} />
             </View>
         </>
 
@@ -82,7 +80,6 @@ export default function Category() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: Dimensions.get('window').height,
         backgroundColor: colors.background,
     },
 
@@ -99,17 +96,16 @@ const styles = StyleSheet.create({
 
     categoryLineOne: {
         flexDirection: 'row',
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
         justifyContent: 'space-evenly',
-        paddingVertical: 10,
+        paddingVertical: 5,
         width: '100%',
     },
 
     footer: {
-        flex: 1,
-        justifyContent: 'flex-end',
+        bottom: 0,
         width: '100%',
-        paddingHorizontal: 20,
-        marginBottom: 20,
+        paddingHorizontal: 15,
+        marginBottom: 10,
     }
 });

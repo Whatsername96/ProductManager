@@ -28,7 +28,7 @@ export async function saveProduct(product: ProductProps): Promise<void> {
         const seconds = Math.abs(
             Math.ceil((now.getTime() - day.getTime()) / 1000)
         );
-        console.log(seconds);
+
         const notificationId = await Notifications.scheduleNotificationAsync({
             content: {
                 title: 'Heeey 🗓️',

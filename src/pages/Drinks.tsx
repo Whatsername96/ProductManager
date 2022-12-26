@@ -62,10 +62,7 @@ export default function Drinks() {
                         ));
 
                     } catch (error) {
-
                         Alert.alert('Não foi possível excluir o produto 🥺');
-                        console.log(error.message);
-                        
                     }
                 }
             }
@@ -77,7 +74,7 @@ export default function Drinks() {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
 
             <StatusBar
                 style={'light'}
@@ -88,7 +85,7 @@ export default function Drinks() {
 
             <Header title={'Bebidas'} showBack={true} showCalendar={false} />
 
-            <View style={styles.container}>
+            <View>
 
                 {drinks.length === 0 ?
 

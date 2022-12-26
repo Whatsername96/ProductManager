@@ -36,102 +36,99 @@ export default function Cosmetics() {
 
     }, []);
 
-        function selectCosmeticsData() {
-            data.forEach((item => {
-                if (item.category === 'cosmetics') {
-                    cosmetics.push(item);
-                }
-            }));
-        }
-
-        selectCosmeticsData();
-
-        function handleRemove(cosmetic: ProductProps){
-            Alert.alert('Remover', `Deseja remover ${cosmetic.id}?`, [
-                {
-                    text: 'Não',
-                    style: 'cancel',
-                },
-                { 
-                    text: 'Sim',
-                    onPress: async () => {
-                        try {
-                            await removeProduct(cosmetic.id);
-                            setData((oldData) => (
-                                oldData.filter((item) => item.id !== cosmetic.id)
-                            ));
-    
-                        } catch (error) {
-
-                            Alert.alert('Não foi possível excluir o produto 🥺');
-                            console.log(error.message);
-                            
-                        }
-                    }
-                }
-            ]);
-        }
-
-        if(loading){
-            return <Load />
-        }
-
-        return (
-            <View>
-
-                <StatusBar
-                    style={'light'}
-                    backgroundColor={colors.theme}
-                    translucent={false}
-                    hidden={false}
-                />
-                <Header title={'Cosméticos'} showBack={true} showCalendar={false} />
-
-                <View style={styles.container}>
-
-                    {cosmetics.length === 0 ?
-
-                        <EmptyCategory />
-                        
-                        :
-
-                        <View style={styles.categoryColumn}>
-
-                            {cosmetics.map(cosmetic => {
-                                return (
-
-                                    <Card
-                                        title={cosmetic.id}
-                                        image={images.cosmetics}
-                                        description={cosmetic.description}
-                                        date={cosmetic.date}
-                                        key={cosmetic.id}
-                                        handleRemove={() => {handleRemove(cosmetic)}}
-                                    />
-
-                                )
-                            })}
-
-                        </View>
-                    }
-
-                </View>
-            </View>
-        );
+    function selectCosmeticsData() {
+        data.forEach((item => {
+            if (item.category === 'cosmetics') {
+                cosmetics.push(item);
+            }
+        }));
     }
 
-const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            width: '100%',
-            alignItems: 'center',
-            backgroundColor: colors.background,
-        },
+    selectCosmeticsData();
 
-        categoryColumn: {
-            width: '100%',
-            flexDirection: 'column',
-            paddingHorizontal: 10,
-            marginTop: 15,
-        },
-    });
+    function handleRemove(cosmetic: ProductProps) {
+        Alert.alert('Remover', `Deseja remover ${cosmetic.id}?`, [
+            {
+                text: 'Não',
+                style: 'cancel',
+            },
+            {
+                text: 'Sim',
+                onPress: async () => {
+                    try {
+                        await removeProduct(cosmetic.id);
+                        setData((oldData) => (
+                            oldData.filter((item) => item.id !== cosmetic.id)
+                        ));
+
+                    } catch (error) {
+                        Alert.alert('Não foi possível excluir o produto 🥺');
+                    }
+                }
+            }
+        ]);
+    }
+
+    if (loading) {
+        return <Load />
+    }
+
+    return (
+        <View style={styles.container}>
+
+            <StatusBar
+                style={'light'}
+                backgroundColor={colors.theme}
+                translucent={false}
+                hidden={false}
+            />
+            <Header title={'Cosméticos'} showBack={true} showCalendar={false} />
+
+            <View>
+
+                {cosmetics.length === 0 ?
+
+                    <EmptyCategory />
+
+                    :
+
+                    <View style={styles.categoryColumn}>
+
+                        {cosmetics.map(cosmetic => {
+                            return (
+
+                                <Card
+                                    title={cosmetic.id}
+                                    image={images.cosmetics}
+                                    description={cosmetic.description}
+                                    date={cosmetic.date}
+                                    key={cosmetic.id}
+                                    handleRemove={() => { handleRemove(cosmetic) }}
+                                />
+
+                            )
+                        })}
+
+                    </View>
+                }
+
+            </View>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: '100%',
+        alignItems: 'center',
+        backgroundColor: colors.background,
+    },
+
+    categoryColumn: {
+        width: '100%',
+        flexDirection: 'column',
+        paddingHorizontal: 10,
+        marginTop: 15,
+    },
+});

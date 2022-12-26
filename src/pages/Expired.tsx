@@ -67,10 +67,7 @@ export default function Expired() {
                         ));
 
                     } catch (error) {
-
                         Alert.alert('Não foi possível excluir o produto 🥺');
-                        console.log(error.message);
-                        
                     }
                 }
             }
@@ -82,7 +79,7 @@ export default function Expired() {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
 
             <StatusBar
                 style={'light'}
@@ -93,7 +90,7 @@ export default function Expired() {
 
             <Header title={'Vencidos'} showBack={true} showCalendar={false} />
 
-            <View style={styles.container}>
+            <View>
 
                 {expired.length === 0 ?
 

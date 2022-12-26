@@ -41,7 +41,6 @@ export async function saveProduct(product: ProductProps): Promise<void> {
             },
             trigger: {
                 seconds: seconds < 60 ? 60 : seconds,
-
             }
         })
 
@@ -69,8 +68,7 @@ export async function saveProduct(product: ProductProps): Promise<void> {
         }
 
     } catch (error) {
-
-        throw new Error(error);
+        throw new Error('Ocorreu um erro ao salvar os produtos');
     }
 }
 
@@ -96,8 +94,7 @@ export async function loadProducts(): Promise<ProductProps[]> {
         return productsSorted;
 
     } catch (error) {
-
-        throw new Error(error);
+        throw new Error('Ocorreu um erro ao buscar os produtos.');
     }
 }
 

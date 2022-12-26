@@ -6,7 +6,7 @@ import {
     ImageSourcePropType,
     View
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
@@ -29,7 +29,7 @@ interface BotaoLinguagemCorporalProps {
 
 export default function Card({ title, image, description, date, handleRemove }: BotaoLinguagemCorporalProps) {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<any>>();
 
     const day = format(new Date(date), 'dd/MM/yyyy');
 
@@ -55,14 +55,14 @@ export default function Card({ title, image, description, date, handleRemove }: 
             renderRightActions={RightActions}
             containerStyle={styles.container}
         >
-            <RectButton 
-            style={styles.content}
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate('Register', {
-                id: title,
-                description: description,
-                date: date,
-            } )}
+            <RectButton
+                style={styles.content}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('Register', {
+                    id: title,
+                    description: description,
+                    date: date,
+                })}
             >
                 <Image source={image} resizeMode={'contain'} style={styles.image} />
                 <View style={styles.containerTexts}>

@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+    SafeAreaView, 
+    View, 
+    Text, 
+    StyleSheet, 
+    Image, 
+    TouchableOpacity, 
+    Dimensions 
+} from 'react-native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { StatusBar } from 'expo-status-bar';
@@ -13,7 +21,7 @@ import fonts from '../styles/fonts';
 
 export default function Welcome() {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<any>>();
     const [name, setName] = useState<string>('');
 
     useEffect(() => {

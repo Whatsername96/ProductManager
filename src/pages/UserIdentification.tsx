@@ -9,9 +9,10 @@ import {
     Platform, 
     TouchableWithoutFeedback, 
     Keyboard, 
-    Alert } from 'react-native';
+    Alert 
+} from 'react-native';
     
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { StatusBar } from 'expo-status-bar';
@@ -26,7 +27,7 @@ export default function UserIdentification() {
     const [isFocused, setFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(false);
     const [name, setName] = useState<string>();
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<any>>();
 
     function handleInputBlur() {
         setFocused(false);

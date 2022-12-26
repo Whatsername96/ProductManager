@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 import fonts from '../styles/fonts';
 import colors from '../styles/colors';
@@ -22,7 +22,7 @@ export default function ModalApp({
 }: ModalAppProps) {
 
     const [modal, setModal] = useState(false);
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<any>>();
 
     useEffect(() => {
         setModal(show);

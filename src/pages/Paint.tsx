@@ -62,10 +62,7 @@ export default function Paint() {
                     ));
 
                 } catch (error) {
-
                     Alert.alert('Não foi possível excluir o produto 🥺');
-                    console.log(error.message);
-                    
                 }
             }
         }
@@ -77,7 +74,7 @@ export default function Paint() {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
 
             <StatusBar
                 style={'light'}
@@ -88,7 +85,7 @@ export default function Paint() {
 
             <Header title={'Tintas'} showBack={true} showCalendar={false} />
 
-            <View style={styles.container}>
+            <View>
 
                 {paint.length === 0 ?
 

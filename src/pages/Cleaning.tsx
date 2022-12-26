@@ -63,10 +63,7 @@ export default function Cleaning() {
                         ));
 
                     } catch (error) {
-
                         Alert.alert('Não foi possível excluir o produto 🥺');
-                        console.log(error.message);
-                        
                     }
                 }
             }
@@ -78,7 +75,7 @@ export default function Cleaning() {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
 
             <StatusBar
                 style={'light'}
@@ -89,7 +86,7 @@ export default function Cleaning() {
 
             <Header title={'Limpeza'} showBack={true} showCalendar={false} />
 
-            <View style={styles.container}>
+            <View>
 
                 {cleaning.length === 0 ?
 

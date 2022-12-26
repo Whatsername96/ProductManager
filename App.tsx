@@ -1,12 +1,13 @@
-import React from 'react';
-import Routes from './src/routes/routes';
-
-import AppLoading from 'expo-app-loading';
+import 'react-native-gesture-handler';
+import { View, StyleSheet } from 'react-native';
 import {
   useFonts,
   Nunito_400Regular,
   Nunito_700Bold,
 } from '@expo-google-fonts/nunito';
+
+import Routes from './src/routes/routes';
+import { Load } from './src/components/Load';
 
 export default function App() {
 
@@ -15,13 +16,17 @@ export default function App() {
     Nunito_700Bold,
   });
 
-  if(!fontsLoaded){
-    return(
-      <AppLoading />
-    );
-  }
-
   return (
-    <Routes />
+    <View style={styles.container}>
+      {
+        fontsLoaded ? <Routes /> : <Load />
+      }
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+})

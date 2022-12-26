@@ -62,10 +62,7 @@ export default function Others() {
                         ));
 
                     } catch (error) {
-
-                        Alert.alert('Não foi possível excluir o produto 🥺');
-                        console.log(error.message);
-                        
+                        Alert.alert('Não foi possível excluir o produto 🥺'); 
                     }
                 }
             }
@@ -77,7 +74,7 @@ export default function Others() {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
 
             <StatusBar
                 style={'light'}
@@ -88,7 +85,7 @@ export default function Others() {
 
             <Header title={'Outros'} showBack={true} showCalendar={false} />
 
-            <View style={styles.container}>
+            <View>
 
                 {others.length === 0 ?
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, BackHandler } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -11,7 +11,7 @@ import Button from '../components/Button';
 
 export default function Confirmation() {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<any>>();
 
     function handleNavigateToCategory() {
         navigation.navigate('Category');
@@ -20,8 +20,8 @@ export default function Confirmation() {
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', () => true)
         return () =>
-          BackHandler.removeEventListener('hardwareBackPress', () => true)
-      }, [])
+            BackHandler.removeEventListener('hardwareBackPress', () => true)
+    }, [])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -50,7 +50,7 @@ export default function Confirmation() {
                         cuidar de seus produtos
                     </Text>
                     <View style={styles.footer}>
-                        <Button title={'Começar'} onPress={handleNavigateToCategory}/>
+                        <Button title={'Começar'} onPress={handleNavigateToCategory} />
                     </View>
 
                 </View>

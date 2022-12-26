@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 import { StatusBar } from 'expo-status-bar';
 
@@ -14,7 +14,7 @@ import images from '../styles/images';
 
 export default function Category() {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<any>>();
 
     // useEffect(() => {
     //     //Não permite que o usuário volte à tela anterior

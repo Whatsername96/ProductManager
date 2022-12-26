@@ -47,13 +47,13 @@ export default function Food() {
 
     selectFoodData();
 
-    function handleRemove(food: ProductProps){
+    function handleRemove(food: ProductProps) {
         Alert.alert('Remover', `Deseja remover ${food.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',
             },
-            { 
+            {
                 text: 'Sim',
                 onPress: async () => {
                     try {
@@ -63,22 +63,19 @@ export default function Food() {
                         ));
 
                     } catch (error) {
-
                         Alert.alert('Não foi possível excluir o produto 🥺');
-                        console.log(error.message);
-                        
                     }
                 }
             }
         ]);
     }
 
-    if(loading){
+    if (loading) {
         return <Load />
     }
 
     return (
-        <View>
+        <View style={styles.container}>
 
             <StatusBar
                 style={'light'}
@@ -89,7 +86,7 @@ export default function Food() {
 
             <Header title={'Alimentos'} showBack={true} showCalendar={false} />
 
-            <View style={styles.container}>
+            <View>
 
                 {foods.length === 0 ?
                     <EmptyCategory />
@@ -108,7 +105,7 @@ export default function Food() {
                                     description={food.description}
                                     date={food.date}
                                     key={food.id}
-                                    handleRemove={() => {handleRemove(food)}}
+                                    handleRemove={() => { handleRemove(food) }}
                                 />
 
                             )

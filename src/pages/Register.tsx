@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import {
     StyleSheet,
     SafeAreaView,
@@ -18,7 +17,7 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 import { isBefore, format } from 'date-fns';
 
@@ -128,7 +127,7 @@ export default function Register() {
         setShowDatePicker(oldState => !oldState);
     }
 
-    function handleChangeDate(event: Event, dateTime: Date | undefined) {
+    function handleChangeDate(event: DateTimePickerEvent, dateTime: Date | undefined) {
 
         if (Platform.OS == 'android') {
 
@@ -190,8 +189,7 @@ export default function Register() {
                     await removeProduct(params.id);
 
                 } catch (error) {
-
-                    console.log(error.message);
+                    console.log(error);
                 }
             }
 
@@ -210,8 +208,7 @@ export default function Register() {
                 setDate(new Date());
 
             } catch (error) {
-
-                setErrorMessage(error.message);
+                setErrorMessage('Ocorreu um erro al salvar, tente novamente.');
             }
 
             setModalVisible(true);
@@ -303,7 +300,7 @@ export default function Register() {
                                 value={date}
                                 mode={'date'}
                                 display={'spinner'}
-                                onChange={handleChangeDate}
+                                onChange={(event, date) => handleChangeDate(event, date)}
                             />
                         )}
 
@@ -323,7 +320,7 @@ export default function Register() {
 
                             <Button
                                 title="Cadastrar Produto"
-                                onPress={() => { handleSave() }}
+                                onPress={handleSave}
                             />
 
                         </View>
@@ -463,7 +460,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         fontFamily: fonts.text,
         fontSize: 16,
-        paddingVertical: 30,
+        color: colors.theme,
         textAlign: 'left',
     },
 

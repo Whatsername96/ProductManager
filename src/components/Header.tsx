@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, SafeAreaView, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Feather } from '@expo/vector-icons';
@@ -20,7 +20,7 @@ export default function Header({ title, showBack, showCalendar }: HeaderProps) {
 
     const [userName, setUserName] = useState<string>();
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp<any>>();
 
     useEffect(() => {
         async function loadStorageUserName() {

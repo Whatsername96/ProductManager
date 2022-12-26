@@ -46,13 +46,13 @@ export default function Pets() {
 
     selectPetsData();
 
-    function handleRemove(pet : ProductProps) {
+    function handleRemove(pet: ProductProps) {
         Alert.alert('Remover', `Deseja remover ${pet.id}?`, [
             {
                 text: 'Não',
                 style: 'cancel',
             },
-            { 
+            {
                 text: 'Sim',
                 onPress: async () => {
                     try {
@@ -62,22 +62,19 @@ export default function Pets() {
                         ));
 
                     } catch (error) {
-
                         Alert.alert('Não foi possível excluir o produto 🥺');
-                        console.log(error.message);
-                        
                     }
                 }
             }
         ]);
     }
 
-    if(loading){
+    if (loading) {
         return <Load />
     }
 
     return (
-        <View>
+        <View style={styles.container}>
 
             <StatusBar
                 style={'light'}
@@ -88,7 +85,7 @@ export default function Pets() {
 
             <Header title={'Pets'} showBack={true} showCalendar={false} />
 
-            <View style={styles.container}>
+            <View>
 
                 {pets.length === 0 ?
 
@@ -107,7 +104,7 @@ export default function Pets() {
                                     description={pet.description}
                                     date={pet.date}
                                     key={pet.id}
-                                    handleRemove={() => {handleRemove(pet)}}
+                                    handleRemove={() => { handleRemove(pet) }}
                                 />
 
                             )
@@ -115,7 +112,7 @@ export default function Pets() {
 
                     </View>
                 }
-                
+
             </View>
 
         </View>

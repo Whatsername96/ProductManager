@@ -58,7 +58,9 @@ export default function Category() {
         setCountShowAds(countShowAds + 1);
         if (countShowAds === 2) {
             setCountShowAds(0);
-            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL);
+            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL, {
+                requestNonPersonalizedAdsOnly: false,
+            });
             adsInterstitial.load();
             adsInterstitial.addAdEventListener(AdEventType.LOADED, () => {
                 adsInterstitial.show();
@@ -147,7 +149,7 @@ export default function Category() {
                         unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
                         onAdFailedToLoad={() => console.log('error')}
                         requestOptions={{
-                            requestNonPersonalizedAdsOnly: true,
+                            requestNonPersonalizedAdsOnly: false,
                         }}
                     />
                 </View>

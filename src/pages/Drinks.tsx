@@ -132,7 +132,7 @@ export default function Drinks() {
                         unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
                         onAdFailedToLoad={() => console.log('error')}
                         requestOptions={{
-                            requestNonPersonalizedAdsOnly: true,
+                            requestNonPersonalizedAdsOnly: false,
                         }}
                     />
                 </View>

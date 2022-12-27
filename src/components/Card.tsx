@@ -48,7 +48,9 @@ export default function Card({ title, image, description, date, handleRemove }: 
         setCountShowAdsNavigate(countShowAdsNavigate + 1);
         if (countShowAdsNavigate === 2) {
             setCountShowAdsNavigate(0);
-            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL);
+            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL, {
+                requestNonPersonalizedAdsOnly: false,
+            });
             adsInterstitial.load();
             adsInterstitial.addAdEventListener(AdEventType.LOADED, () => {
                 adsInterstitial.show();
@@ -63,7 +65,9 @@ export default function Card({ title, image, description, date, handleRemove }: 
         setCountAdsAndDelete(countAdsAndDelete + 1);
         if (countAdsAndDelete === 2) {
             setCountAdsAndDelete(0);
-            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL);
+            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL, {
+                requestNonPersonalizedAdsOnly: false,
+            });
             adsInterstitial.load();
             adsInterstitial.addAdEventListener(AdEventType.LOADED, () => {
                 adsInterstitial.show();

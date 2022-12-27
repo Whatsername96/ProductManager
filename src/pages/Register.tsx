@@ -24,9 +24,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
 import {
     BannerAd,
-    BannerAdSize,
-    InterstitialAd,
-    AdEventType
+    BannerAdSize
 } from 'react-native-google-mobile-ads';
 
 //Scripts imports
@@ -363,7 +361,7 @@ export default function Register() {
                             unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
                             onAdFailedToLoad={() => console.log('error')}
                             requestOptions={{
-                                requestNonPersonalizedAdsOnly: true,
+                                requestNonPersonalizedAdsOnly: false,
                             }}
                         />
                     </View>

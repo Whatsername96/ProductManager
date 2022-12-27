@@ -36,14 +36,15 @@ interface HeaderProps {
 export default function Header({ title, showBack, showCalendar }: HeaderProps) {
     const [userName, setUserName] = useState<string>();
     const [countShowAdsNavigate, setCountShowAdsNavigate] = useState(0);
-    const [countShowAdsNavigateBack, setCountShowAdsNavigateBack] = useState(0);
     const navigation = useNavigation<NavigationProp<any>>();
 
     function countToShowAdsAndGoToRoute(route: string) {
         setCountShowAdsNavigate(countShowAdsNavigate + 1);
         if (countShowAdsNavigate === 2) {
             setCountShowAdsNavigate(0);
-            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL);
+            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL, {
+                requestNonPersonalizedAdsOnly: false,
+            });
             adsInterstitial.load();
             adsInterstitial.addAdEventListener(AdEventType.LOADED, () => {
                 adsInterstitial.show();

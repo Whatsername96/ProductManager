@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+//React imports
+import { useEffect, useState } from 'react';
 import {
     SafeAreaView, 
     View, 
@@ -11,11 +12,12 @@ import {
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//Expo imports
 import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
 
+//Assets imports
 import purchases from '../images/purchases.png';
-
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 

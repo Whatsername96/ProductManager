@@ -1,26 +1,29 @@
-import React, { useState } from 'react';
-import { 
-    View, 
-    Text, 
-    StyleSheet, 
-    SafeAreaView, 
-    TextInput, 
-    KeyboardAvoidingView, 
-    Platform, 
-    TouchableWithoutFeedback, 
-    Keyboard, 
-    Alert 
+//React imports
+import { useState } from 'react';
+import {
+    View,
+    Text,
+    StyleSheet,
+    SafeAreaView,
+    TextInput,
+    KeyboardAvoidingView,
+    Platform,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Alert
 } from 'react-native';
-    
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//Expo imports
 import { StatusBar } from 'expo-status-bar';
 
+//Components imports
+import Button from '../components/Button';
+
+//Assets imports
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-
-import Button from '../components/Button';
 
 export default function UserIdentification() {
 
@@ -51,7 +54,7 @@ export default function UserIdentification() {
         try {
 
             await AsyncStorage.setItem('@productmanager:user', name);
-            
+
         } catch (error) {
 
             console.log(error);

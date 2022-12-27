@@ -1,14 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+//React imports
+import { useEffect, useState } from 'react';
+import { View, StyleSheet, Alert, ScrollView } from 'react-native';
 
+//Expo imports
 import { StatusBar } from 'expo-status-bar';
+import {
+    BannerAd,
+    BannerAdSize,
+} from 'react-native-google-mobile-ads';
 
+//Components imports
 import Header from '../components/Header';
 import Card from '../components/Card';
-import EmptyCategory from '../components/EmptyCategory';
-import { loadProducts, ProductProps, removeProduct } from '../libs/storage';
 import { Load } from '../components/Load';
+import EmptyCategory from '../components/EmptyCategory';
 
+//Internal imports
+import { loadProducts, ProductProps, removeProduct } from '../libs/storage';
+import { UNIT_ID_BANNER } from '@env';
+
+//Assets imports
 import colors from '../styles/colors';
 import images from '../styles/images';
 
@@ -84,7 +95,7 @@ export default function Cosmetics() {
             />
             <Header title={'Cosméticos'} showBack={true} showCalendar={false} />
 
-            <View>
+            <ScrollView>
 
                 {cosmetics.length === 0 ?
 
@@ -112,6 +123,18 @@ export default function Cosmetics() {
                     </View>
                 }
 
+            </ScrollView>
+            <View style={styles.footer}>
+                <View style={styles.container_ads}>
+                    <BannerAd
+                        size={BannerAdSize.FULL_BANNER}
+                        unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                        onAdFailedToLoad={() => console.log('error')}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                    />
+                </View>
             </View>
         </View>
     );
@@ -131,4 +154,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginTop: 15,
     },
+
+    footer: {
+        bottom: 0,
+        width: '100%',
+        paddingHorizontal: 15,
+        marginBottom: 0,
+        paddingTop: 10,
+    },
+
+    container_ads: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: 10,
+    }
 });

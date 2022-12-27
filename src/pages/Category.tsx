@@ -1,13 +1,23 @@
-import React from 'react';
+//React imports
+import { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
+//Expo imports
 import { StatusBar } from 'expo-status-bar';
+import {
+    BannerAd,
+    BannerAdSize,
+    MobileAds,
+    MaxAdContentRating
+} from 'react-native-google-mobile-ads';
 
+//Components imports
 import Header from '../components/Header';
 import ButtonCategory from '../components/ButtonCategory';
 import Button from '../components/Button';
 
+//Assets imports
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 import images from '../styles/images';
@@ -15,7 +25,6 @@ import images from '../styles/images';
 export default function Category() {
 
     const navigation = useNavigation<NavigationProp<any>>();
-
     // useEffect(() => {
     //     //Não permite que o usuário volte à tela anterior
     //     BackHandler.addEventListener('hardwareBackPress', () => true)
@@ -27,8 +36,36 @@ export default function Category() {
         navigation.navigate('Register');
     }
 
+    useEffect(() => {
+        // MobileAds()
+        //     .setRequestConfiguration({
+        //         // Update all future requests suitable for parental guidance
+        //         maxAdContentRating: MaxAdContentRating.PG,
+
+        //         // Indicates that you want your content treated as child-directed for purposes of COPPA.
+        //         tagForChildDirectedTreatment: true,
+
+        //         // Indicates that you want the ad request to be handled in a
+        //         // manner suitable for users under the age of consent.
+        //         tagForUnderAgeOfConsent: true,
+
+        //         // An array of test device IDs to allow.
+        //         testDeviceIdentifiers: ['EMULATOR'],
+        //     })
+        //     .then(() => {
+        //         // Request config successfully set!
+        //     });
+
+        // MobileAds()
+        //     .initialize()
+        //     .then(adapterStatuses => {
+        //         // Initialization complete!
+        //     });
+
+    }, []);
+
     return (
-        <>
+        <View style={styles.container}>
             <StatusBar
                 style={'light'}
                 backgroundColor={colors.theme}
@@ -38,7 +75,7 @@ export default function Category() {
 
             <Header title={''} showBack={true} showCalendar={true} />
 
-            <ScrollView contentContainerStyle={styles.container}>
+            <ScrollView contentContainerStyle={styles.container_scroll}>
 
                 <Text style={styles.text}>
                     Selecione uma categoria para ver{'\n'}
@@ -71,8 +108,19 @@ export default function Category() {
 
             <View style={styles.footer}>
                 <Button title={'Cadastrar Produto'} onPress={handleNavigateToRegister} />
+                <View style={styles.container_ads}>
+                    <BannerAd
+                        size={BannerAdSize.FULL_BANNER}
+                        unitId="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+                        onAdFailedToLoad={() => console.log('error')}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                    />
+                </View>
+
             </View>
-        </>
+        </View>
 
     );
 }
@@ -81,6 +129,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.background,
+    },
+
+    container_scroll: {
+        paddingBottom: 20,
     },
 
     text: {
@@ -106,6 +158,13 @@ const styles = StyleSheet.create({
         bottom: 0,
         width: '100%',
         paddingHorizontal: 15,
-        marginBottom: 10,
+        marginBottom: 0,
+        paddingTop: 10,
+    },
+
+    container_ads: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: 10,
     }
 });

@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, ScrollView } from 'react-native';
 
 import { StatusBar } from 'expo-status-bar';
+import {
+    BannerAd,
+    BannerAdSize
+} from 'react-native-google-mobile-ads';
 
 import Header from '../components/Header';
 import Card from '../components/Card';
 import EmptyCategory from '../components/EmptyCategory';
-import { loadProducts, ProductProps, removeProduct} from '../libs/storage';
+import { loadProducts, ProductProps, removeProduct } from '../libs/storage';
 import { Load } from '../components/Load';
+
+import { UNIT_ID_BANNER } from '@env';
 
 import colors from '../styles/colors';
 import images from '../styles/images';
 
 export default function Paint() {
-    
+
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductProps[]>([]);
     const paint: ProductProps[] = [];
@@ -46,30 +52,30 @@ export default function Paint() {
 
     selectPaintData();
 
-   function handleRemove(paintItem: ProductProps) {
-    Alert.alert('Remover', `Deseja remover ${paintItem.id}?`, [
-        {
-            text: 'Não',
-            style: 'cancel',
-        },
-        { 
-            text: 'Sim',
-            onPress: async () => {
-                try {
-                    await removeProduct(paintItem.id);
-                    setData((oldData) => (
-                        oldData.filter((item) => item.id !== paintItem.id)
-                    ));
+    function handleRemove(paintItem: ProductProps) {
+        Alert.alert('Remover', `Deseja remover ${paintItem.id}?`, [
+            {
+                text: 'Não',
+                style: 'cancel',
+            },
+            {
+                text: 'Sim',
+                onPress: async () => {
+                    try {
+                        await removeProduct(paintItem.id);
+                        setData((oldData) => (
+                            oldData.filter((item) => item.id !== paintItem.id)
+                        ));
 
-                } catch (error) {
-                    Alert.alert('Não foi possível excluir o produto 🥺');
+                    } catch (error) {
+                        Alert.alert('Não foi possível excluir o produto 🥺');
+                    }
                 }
             }
-        }
-    ]);
+        ]);
     }
 
-    if(loading){
+    if (loading) {
         return <Load />
     }
 
@@ -85,7 +91,7 @@ export default function Paint() {
 
             <Header title={'Tintas'} showBack={true} showCalendar={false} />
 
-            <View>
+            <ScrollView>
 
                 {paint.length === 0 ?
 
@@ -104,7 +110,7 @@ export default function Paint() {
                                     description={paintItem.description}
                                     date={paintItem.date}
                                     key={paintItem.id}
-                                    handleRemove={() => {handleRemove(paintItem)}}
+                                    handleRemove={() => { handleRemove(paintItem) }}
                                 />
 
                             )
@@ -112,9 +118,20 @@ export default function Paint() {
 
                     </View>
                 }
-                
-            </View>
 
+            </ScrollView>
+            <View style={styles.footer}>
+                <View style={styles.container_ads}>
+                    <BannerAd
+                        size={BannerAdSize.FULL_BANNER}
+                        unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                        onAdFailedToLoad={() => console.log('error')}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                    />
+                </View>
+            </View>
         </View>
     );
 }
@@ -133,4 +150,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginTop: 15,
     },
+
+    footer: {
+        bottom: 0,
+        width: '100%',
+        paddingHorizontal: 15,
+        marginBottom: 0,
+        paddingTop: 10,
+    },
+
+    container_ads: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: 10,
+    }
 });

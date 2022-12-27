@@ -7,7 +7,7 @@ import {
 } from '@expo-google-fonts/nunito';
 
 import Routes from './src/routes/routes';
-import { Load } from './src/components/Load';
+import { LoadInitial } from './src/components/LoadInitial';
 
 export default function App() {
 
@@ -19,7 +19,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       {
-        fontsLoaded ? <Routes /> : <Load />
+        fontsLoaded ? <Routes /> : <LoadInitial />
       }
     </View>
   );

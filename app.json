@@ -18,12 +18,6 @@
           "color": "#ffffff",
           "mode": "production"
         }
-      ],
-      [
-        "expo-ads-admob",
-        {
-          "userTrackingPermission": "This identifier will be used to deliver personalized ads to you."
-        }
       ]
     ],
     "updates": {
@@ -42,10 +36,16 @@
       },
       "package": "com.productmanager",
       "versionCode": 1,
-      "permissions": [],
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713"
+      "permissions": []
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6124f012-48fc-40e3-af55-e080d3ac00dc"
       }
     }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-3940256099942544~3347511713",
+    "ios_app_id": "ca-app-pub-3940256099942544~1458002511"
   }
 }

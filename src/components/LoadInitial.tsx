@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
-import loadingAnimation from '../images/loading.json';
+import loadingAnimation from '../images/loading_purple.json';
 import colors from '../styles/colors';
 
-export function Load() {
+export function LoadInitial() {
     return (
         <View style={styles.container}>
             <LottieView
@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
     },
 
     animation: {
-        backgroundColor: colors.theme,
+        backgroundColor: colors.background,
     }
 });

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+//React imports
+import { useState, useEffect } from 'react';
 import {
     StyleSheet,
-    SafeAreaView,
+    ScrollView,
     View,
     KeyboardAvoidingView,
     Platform,
@@ -12,22 +13,32 @@ import {
     Alert,
     TouchableOpacity,
     Text,
-    NativeModules,
-    Dimensions
+    NativeModules
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
-import { isBefore, format } from 'date-fns';
-
+//Expo imports
 import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
+import {
+    BannerAd,
+    BannerAdSize
+} from 'react-native-google-mobile-ads';
 
+//Scripts imports
+import { isBefore, format } from 'date-fns';
+
+//Components imports
 import Header from '../components/Header';
 import Button from '../components/Button';
 import ModalApp from '../components/ModalApp';
 
+//Internal imports
+import { UNIT_ID_BANNER } from '@env';
+
+//Assets imports
 import colors from '../styles/colors';
 import images from '../styles/images';
 import fonts from '../styles/fonts';
@@ -232,9 +243,7 @@ export default function Register() {
                 />
                 <Header title={'Cadastrar'} showBack={true} showCalendar={false} />
 
-                <SafeAreaView
-                    style={styles.containerScrollView}
-                >
+                <ScrollView nestedScrollEnabled>
 
                     <View style={styles.content}>
 
@@ -268,32 +277,33 @@ export default function Register() {
                             value={description || ''}
                         />
 
-                        <DropDownPicker
-                            placeholder={'Selecione uma categoria...'}
-                            placeholderStyle={styles.pickerPlaceholder}
-                            open={open}
-                            value={category}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setCategory}
-                            setItems={setItems}
-                            itemSeparator={true}
-                            style={styles.pickerInput}
-                            containerStyle={styles.containerPicker}
-                            textStyle={styles.textPicker}
-                            labelStyle={styles.labelPicker}
-                            ArrowUpIconComponent={({ style }) => <Feather name="chevron-up" style={style} color={colors.theme} size={25} />}
-                            ArrowDownIconComponent={({ style }) => <Feather name="chevron-down" style={style} color={colors.theme} size={25} />}
-                            arrowIconContainerStyle={styles.arrowContainer}
-                            tickIconContainerStyle={styles.tickIconContainerStyle}
-                            TickIconComponent={({ style }) => <Feather name="check" style={style} color={colors.theme} size={25} />}
-                            dropDownContainerStyle={styles.dropDownContainerPicker}
-                            listItemContainerStyle={styles.dropDownItemsPicker}
-                            listItemLabelStyle={styles.dropDownLabelPicker}
-                            itemSeparatorStyle={styles.itemSeparator}
-                            selectedItemContainerStyle={styles.selectedItemContainer}
-                            selectedItemLabelStyle={styles.selectedItemLabel}
-                        />
+                            <DropDownPicker
+                                placeholder={'Selecione uma categoria...'}
+                                placeholderStyle={styles.pickerPlaceholder}
+                                open={open}
+                                value={category}
+                                items={items}
+                                setOpen={setOpen}
+                                setValue={setCategory}
+                                setItems={setItems}
+                                itemSeparator={true}
+                                listMode={"SCROLLVIEW"}
+                                style={styles.pickerInput}
+                                containerStyle={styles.containerPicker}
+                                textStyle={styles.textPicker}
+                                labelStyle={styles.labelPicker}
+                                ArrowUpIconComponent={({ style }) => <Feather name="chevron-up" style={style} color={colors.theme} size={25} />}
+                                ArrowDownIconComponent={({ style }) => <Feather name="chevron-down" style={style} color={colors.theme} size={25} />}
+                                arrowIconContainerStyle={styles.arrowContainer}
+                                tickIconContainerStyle={styles.tickIconContainerStyle}
+                                TickIconComponent={({ style }) => <Feather name="check" style={style} color={colors.theme} size={25} />}
+                                dropDownContainerStyle={styles.dropDownContainerPicker}
+                                listItemContainerStyle={styles.dropDownItemsPicker}
+                                listItemLabelStyle={styles.dropDownLabelPicker}
+                                itemSeparatorStyle={styles.itemSeparator}
+                                selectedItemContainerStyle={styles.selectedItemContainer}
+                                selectedItemLabelStyle={styles.selectedItemLabel}
+                            />
 
                         {showDatePicker && (
                             <DateTimePicker
@@ -343,8 +353,20 @@ export default function Register() {
                             route={''}
                         />
                     }
-                </SafeAreaView >
+                </ScrollView>
 
+                <View style={styles.footer}>
+                    <View style={styles.container_ads}>
+                        <BannerAd
+                            size={BannerAdSize.FULL_BANNER}
+                            unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                            onAdFailedToLoad={() => console.log('error')}
+                            requestOptions={{
+                                requestNonPersonalizedAdsOnly: true,
+                            }}
+                        />
+                    </View>
+                </View>
             </KeyboardAvoidingView>
 
         </TouchableWithoutFeedback>
@@ -353,10 +375,6 @@ export default function Register() {
 }
 
 const styles = StyleSheet.create({
-    containerScrollView: {
-        height: Dimensions.get('window').height,
-    },
-
     container: {
         flex: 1,
     },
@@ -445,6 +463,7 @@ const styles = StyleSheet.create({
 
     iconStyle: {
         height: '100%',
+        minWidth: 80,
         justifyContent: 'center',
     },
 
@@ -479,8 +498,21 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
         marginTop: 50,
-        width: '90%',
+        width: '100%',
         marginBottom: 30,
-    }
+    },
 
+    footer: {
+        bottom: 0,
+        width: '100%',
+        paddingHorizontal: 15,
+        marginBottom: 0,
+        paddingTop: 10,
+    },
+
+    container_ads: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: 10,
+    }
 });

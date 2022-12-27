@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react';
+//React imports
+import { useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, BackHandler } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
+//Expo imports
 import { StatusBar } from 'expo-status-bar';
 
+//Components imports
+import Button from '../components/Button';
+
+//Assets imports
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-
-import Button from '../components/Button';
 
 export default function Confirmation() {
 

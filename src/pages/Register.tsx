@@ -230,21 +230,21 @@ export default function Register() {
 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-            <KeyboardAvoidingView
-                style={styles.container}
-                behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS == 'ios' ? 0 : alturaStatusBar}
-            >
-                <StatusBar
-                    style={'light'}
-                    backgroundColor={colors.theme}
-                    translucent={false}
-                    hidden={false}
-                />
-                <Header title={'Cadastrar'} showBack={true} showCalendar={false} />
+            <StatusBar
+                style={'light'}
+                backgroundColor={colors.theme}
+                translucent={false}
+                hidden={false}
+            />
+            <Header title={'Cadastrar'} showBack={true} showCalendar={false} />
 
-                <ScrollView nestedScrollEnabled>
+            <ScrollView nestedScrollEnabled>
 
+                <KeyboardAvoidingView
+                    style={styles.container}
+                    behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+                    keyboardVerticalOffset={Platform.OS == 'ios' ? 0 : alturaStatusBar}
+                >
                     <View style={styles.content}>
 
                         <TextInput
@@ -277,33 +277,33 @@ export default function Register() {
                             value={description || ''}
                         />
 
-                            <DropDownPicker
-                                placeholder={'Selecione uma categoria...'}
-                                placeholderStyle={styles.pickerPlaceholder}
-                                open={open}
-                                value={category}
-                                items={items}
-                                setOpen={setOpen}
-                                setValue={setCategory}
-                                setItems={setItems}
-                                itemSeparator={true}
-                                listMode={"SCROLLVIEW"}
-                                style={styles.pickerInput}
-                                containerStyle={styles.containerPicker}
-                                textStyle={styles.textPicker}
-                                labelStyle={styles.labelPicker}
-                                ArrowUpIconComponent={({ style }) => <Feather name="chevron-up" style={style} color={colors.theme} size={25} />}
-                                ArrowDownIconComponent={({ style }) => <Feather name="chevron-down" style={style} color={colors.theme} size={25} />}
-                                arrowIconContainerStyle={styles.arrowContainer}
-                                tickIconContainerStyle={styles.tickIconContainerStyle}
-                                TickIconComponent={({ style }) => <Feather name="check" style={style} color={colors.theme} size={25} />}
-                                dropDownContainerStyle={styles.dropDownContainerPicker}
-                                listItemContainerStyle={styles.dropDownItemsPicker}
-                                listItemLabelStyle={styles.dropDownLabelPicker}
-                                itemSeparatorStyle={styles.itemSeparator}
-                                selectedItemContainerStyle={styles.selectedItemContainer}
-                                selectedItemLabelStyle={styles.selectedItemLabel}
-                            />
+                        <DropDownPicker
+                            placeholder={'Selecione uma categoria...'}
+                            placeholderStyle={styles.pickerPlaceholder}
+                            open={open}
+                            value={category}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setCategory}
+                            setItems={setItems}
+                            itemSeparator={true}
+                            listMode={"SCROLLVIEW"}
+                            style={styles.pickerInput}
+                            containerStyle={styles.containerPicker}
+                            textStyle={styles.textPicker}
+                            labelStyle={styles.labelPicker}
+                            ArrowUpIconComponent={({ style }) => <Feather name="chevron-up" style={style} color={colors.theme} size={25} />}
+                            ArrowDownIconComponent={({ style }) => <Feather name="chevron-down" style={style} color={colors.theme} size={25} />}
+                            arrowIconContainerStyle={styles.arrowContainer}
+                            tickIconContainerStyle={styles.tickIconContainerStyle}
+                            TickIconComponent={({ style }) => <Feather name="check" style={style} color={colors.theme} size={25} />}
+                            dropDownContainerStyle={styles.dropDownContainerPicker}
+                            listItemContainerStyle={styles.dropDownItemsPicker}
+                            listItemLabelStyle={styles.dropDownLabelPicker}
+                            itemSeparatorStyle={styles.itemSeparator}
+                            selectedItemContainerStyle={styles.selectedItemContainer}
+                            selectedItemLabelStyle={styles.selectedItemLabel}
+                        />
 
                         {showDatePicker && (
                             <DateTimePicker
@@ -336,38 +336,38 @@ export default function Register() {
                         </View>
 
                     </View>
+                </KeyboardAvoidingView>
+                {errorMessage === '' ?
+                    <ModalApp
+                        show={modalVisible}
+                        close={() => setModalVisible(false)}
+                        title={'😄'}
+                        description={'Produto salvo com sucesso!'}
+                        route={'Category'}
+                    /> :
+                    <ModalApp
+                        show={modalVisible}
+                        close={() => setModalVisible(false)}
+                        title={'😕'}
+                        description={'Ocorreu um erro. Tente mudar o nome do produto.'}
+                        route={''}
+                    />
+                }
+            </ScrollView>
 
-                    {errorMessage === '' ?
-                        <ModalApp
-                            show={modalVisible}
-                            close={() => setModalVisible(false)}
-                            title={'😄'}
-                            description={'Produto salvo com sucesso!'}
-                            route={'Category'}
-                        /> :
-                        <ModalApp
-                            show={modalVisible}
-                            close={() => setModalVisible(false)}
-                            title={'😕'}
-                            description={'Ocorreu um erro. Tente mudar o nome do produto.'}
-                            route={''}
-                        />
-                    }
-                </ScrollView>
-
-                <View style={styles.footer}>
-                    <View style={styles.container_ads}>
-                        <BannerAd
-                            size={BannerAdSize.FULL_BANNER}
-                            unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
-                            onAdFailedToLoad={() => console.log('error')}
-                            requestOptions={{
-                                requestNonPersonalizedAdsOnly: true,
-                            }}
-                        />
-                    </View>
+            <View style={styles.footer}>
+                <View style={styles.container_ads}>
+                    <BannerAd
+                        size={BannerAdSize.FULL_BANNER}
+                        unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                        onAdFailedToLoad={() => console.log('error')}
+                        requestOptions={{
+                            requestNonPersonalizedAdsOnly: true,
+                        }}
+                    />
                 </View>
-            </KeyboardAvoidingView>
+            </View>
+
 
         </TouchableWithoutFeedback>
 

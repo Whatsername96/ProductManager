@@ -1,7 +1,8 @@
-import React from 'react';
+//React imports
 import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
+//Assets imports
 import loadingAnimation from '../images/loading_purple.json';
 import colors from '../styles/colors';
 

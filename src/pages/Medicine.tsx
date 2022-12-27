@@ -166,6 +166,5 @@ const styles = StyleSheet.create({
     container_ads: {
         width: '100%',
         alignItems: 'center',
-        marginTop: 10,
     }
 });

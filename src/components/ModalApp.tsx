@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+//React imports
+import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
+//Assets imports
 import fonts from '../styles/fonts';
 import colors from '../styles/colors';
 
@@ -31,7 +33,6 @@ export default function ModalApp({
     if (show) {
 
         return (
-
             <Modal
                 animationType="fade"
                 statusBarTranslucent
@@ -51,7 +52,7 @@ export default function ModalApp({
                         <TouchableOpacity
                             activeOpacity={0.7}
                             style={styles.modalButton}
-                            onPress={() => { close(!modal); route != '' ? navigation.navigate(route) : {}}}
+                            onPress={() => { close(!modal); route != '' ? navigation.navigate(route) : {} }}
                         >
                             <Text style={styles.modalButtonText}>Ok</Text>
                         </TouchableOpacity>
@@ -61,12 +62,10 @@ export default function ModalApp({
                 </View>
 
             </Modal>
-
         )
     } else {
         return (<View style={{ width: 0, height: 0 }}></View>);
     }
-
 }
 
 const styles = StyleSheet.create({

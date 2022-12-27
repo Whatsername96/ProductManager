@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        alignItems: 'center',
         backgroundColor: colors.background,
     },
 
@@ -166,6 +165,5 @@ const styles = StyleSheet.create({
     container_ads: {
         width: '100%',
         alignItems: 'center',
-        marginTop: 10,
     }
 });

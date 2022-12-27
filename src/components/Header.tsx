@@ -1,13 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, SafeAreaView, TouchableOpacity, Image } from 'react-native';
+//React imports
+import { useEffect, useState } from 'react';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Dimensions,
+    SafeAreaView,
+    TouchableOpacity,
+    Image
+} from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//Expo imports
 import { Feather } from '@expo/vector-icons';
+import {
+    InterstitialAd,
+    AdEventType
+} from 'react-native-google-mobile-ads';
 
+//Internal imports
+import { UNIT_ID_INTERSTITIAL } from '@env';
+
+//Assets imports
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-
 import logoWhite from '../images/logo_white.png';
 
 interface HeaderProps {
@@ -17,10 +34,25 @@ interface HeaderProps {
 }
 
 export default function Header({ title, showBack, showCalendar }: HeaderProps) {
-
     const [userName, setUserName] = useState<string>();
-
+    const [countShowAdsNavigate, setCountShowAdsNavigate] = useState(0);
+    const [countShowAdsNavigateBack, setCountShowAdsNavigateBack] = useState(0);
     const navigation = useNavigation<NavigationProp<any>>();
+
+    function countToShowAdsAndGoToRoute(route: string) {
+        setCountShowAdsNavigate(countShowAdsNavigate + 1);
+        if (countShowAdsNavigate === 2) {
+            setCountShowAdsNavigate(0);
+            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL);
+            adsInterstitial.load();
+            adsInterstitial.addAdEventListener(AdEventType.LOADED, () => {
+                adsInterstitial.show();
+            });
+            navigation.navigate(route);
+        } else {
+            navigation.navigate(route);
+        }
+    }
 
     useEffect(() => {
         async function loadStorageUserName() {
@@ -54,7 +86,7 @@ export default function Header({ title, showBack, showCalendar }: HeaderProps) {
                 }
 
                 {showCalendar ?
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Expired')}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => countToShowAdsAndGoToRoute('Expired')}>
                         <Image source={logoWhite} style={styles.img} />
                     </TouchableOpacity> :
                     <View style={{ width: 24, marginRight: 20 }} />

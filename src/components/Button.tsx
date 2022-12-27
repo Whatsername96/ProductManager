@@ -1,20 +1,23 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+//React imports
+import {
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    TouchableOpacityProps
+} from 'react-native';
 
-import { StatusBar } from 'expo-status-bar';
-
+//Assets imports
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
-interface ButtonProps extends TouchableOpacityProps{
+interface ButtonProps extends TouchableOpacityProps {
     title: string
 }
 
-export default function Button({ title, ...rest } : ButtonProps){
+export default function Button({ title, ...rest }: ButtonProps) {
     return (
         <TouchableOpacity activeOpacity={0.7} style={styles.container}
-        {...rest}
+            {...rest}
         >
             <Text style={styles.text}>
                 {title}

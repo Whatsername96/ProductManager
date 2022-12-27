@@ -146,6 +146,82 @@ export default function Food() {
                             )
                         })}
 
+{foods.map(food => {
+
+return (
+
+    <Card
+        title={food.id}
+        image={images.food}
+        description={food.description}
+        date={food.date}
+        key={food.id}
+        handleRemove={() => { handleRemove(food) }}
+    />
+
+)
+})}
+{foods.map(food => {
+
+return (
+
+    <Card
+        title={food.id}
+        image={images.food}
+        description={food.description}
+        date={food.date}
+        key={food.id}
+        handleRemove={() => { handleRemove(food) }}
+    />
+
+)
+})}
+{foods.map(food => {
+
+return (
+
+    <Card
+        title={food.id}
+        image={images.food}
+        description={food.description}
+        date={food.date}
+        key={food.id}
+        handleRemove={() => { handleRemove(food) }}
+    />
+
+)
+})}
+{foods.map(food => {
+
+return (
+
+    <Card
+        title={food.id}
+        image={images.food}
+        description={food.description}
+        date={food.date}
+        key={food.id}
+        handleRemove={() => { handleRemove(food) }}
+    />
+
+)
+})}
+{foods.map(food => {
+
+return (
+
+    <Card
+        title={food.id}
+        image={images.food}
+        description={food.description}
+        date={food.date}
+        key={food.id}
+        handleRemove={() => { handleRemove(food) }}
+    />
+
+)
+})}
+
                     </View>
                 }
 
@@ -170,7 +246,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        alignItems: 'center',
         backgroundColor: colors.background,
     },
 
@@ -192,6 +267,5 @@ const styles = StyleSheet.create({
     container_ads: {
         width: '100%',
         alignItems: 'center',
-        marginTop: 10,
     }
 });

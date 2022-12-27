@@ -24,7 +24,9 @@ import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
 import {
     BannerAd,
-    BannerAdSize
+    BannerAdSize,
+    InterstitialAd,
+    AdEventType
 } from 'react-native-google-mobile-ads';
 
 //Scripts imports
@@ -35,15 +37,14 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 import ModalApp from '../components/ModalApp';
 
-//Internal imports
-import { UNIT_ID_BANNER } from '@env';
+//Internal Imports
+import { removeProduct, saveProduct } from '../libs/storage';
+import { UNIT_ID_BANNER, UNIT_ID_INTERSTITIAL } from '@env';
 
 //Assets imports
 import colors from '../styles/colors';
 import images from '../styles/images';
 import fonts from '../styles/fonts';
-
-import { removeProduct, saveProduct } from '../libs/storage';
 
 interface ProductDetailsParams {
     id: string;
@@ -91,21 +92,6 @@ export default function Register() {
     const [modalVisible, setModalVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
-    useEffect(() => {
-
-        if (params) {
-            setName(params.id);
-            setDescription(params.description);
-
-            if (!isBefore(new Date(params.date), new Date())) {
-                setDate(new Date(params.date));
-            } else {
-                setDate(new Date());
-            }
-        }
-
-    }, []);
-
     function handleInputBlurName() {
         setFocusedName(false);
         setIsFilledName(!!name)
@@ -152,7 +138,7 @@ export default function Register() {
 
             if (isBefore(dateTime, today)) {
 
-                return Alert.alert('Escolha uma data no futuro!');
+                return Alert.alert('Erro', 'Escolha uma data no futuro!');
 
             } else {
                 let dateTimeComp = new Date(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate());
@@ -190,7 +176,7 @@ export default function Register() {
 
         if (error) {
 
-            return Alert.alert('Dados inválidos no formulário');
+            return Alert.alert('Erro', 'Preencha todos os campos ou confira se a data é maior ou igual a hoje.');
 
         } else {
 
@@ -219,156 +205,170 @@ export default function Register() {
                 setDate(new Date());
 
             } catch (error) {
-                setErrorMessage('Ocorreu um erro al salvar, tente novamente.');
+                setErrorMessage('Ocorreu um erro ao salvar, tente novamente.');
             }
 
             setModalVisible(true);
         }
     }
 
+    useEffect(() => {
+
+        if (params) {
+            setName(params.id);
+            setDescription(params.description);
+
+            if (!isBefore(new Date(params.date), new Date())) {
+                setDate(new Date(params.date));
+            } else {
+                setDate(new Date());
+            }
+        }
+
+    }, []);
+
     return (
 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <>
+                <StatusBar
+                    style={'light'}
+                    backgroundColor={colors.theme}
+                    translucent={false}
+                    hidden={false}
+                />
+                <Header title={'Cadastrar'} showBack={true} showCalendar={false} />
 
-            <StatusBar
-                style={'light'}
-                backgroundColor={colors.theme}
-                translucent={false}
-                hidden={false}
-            />
-            <Header title={'Cadastrar'} showBack={true} showCalendar={false} />
+                <ScrollView nestedScrollEnabled>
 
-            <ScrollView nestedScrollEnabled>
+                    <KeyboardAvoidingView
+                        style={styles.container}
+                        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+                        keyboardVerticalOffset={Platform.OS == 'ios' ? 0 : alturaStatusBar}
+                    >
+                        <View style={styles.content}>
 
-                <KeyboardAvoidingView
-                    style={styles.container}
-                    behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-                    keyboardVerticalOffset={Platform.OS == 'ios' ? 0 : alturaStatusBar}
-                >
-                    <View style={styles.content}>
-
-                        <TextInput
-                            style={[
-                                styles.input,
-                                (isFocusedName || isFilledName) &&
-                                { borderBottomColor: colors.theme }
-                            ]}
-                            placeholder={"Digite o nome do produto"}
-                            placeholderTextColor={colors.placeholder}
-                            onBlur={handleInputBlurName}
-                            onFocus={handleInputFocusName}
-                            onChangeText={handleInputChangeName}
-                            maxLength={20}
-                            value={name || ''}
-                        />
-
-                        <TextInput
-                            style={[
-                                styles.input,
-                                (isFocusedDescription || isFilledDescription) &&
-                                { borderBottomColor: colors.theme }
-                            ]}
-                            placeholder={"Digite a descrição do produto"}
-                            placeholderTextColor={colors.placeholder}
-                            onBlur={handleInputBlurDescription}
-                            onFocus={handleInputFocusDescription}
-                            onChangeText={handleInputChangeDescription}
-                            maxLength={50}
-                            value={description || ''}
-                        />
-
-                        <DropDownPicker
-                            placeholder={'Selecione uma categoria...'}
-                            placeholderStyle={styles.pickerPlaceholder}
-                            open={open}
-                            value={category}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setCategory}
-                            setItems={setItems}
-                            itemSeparator={true}
-                            listMode={"SCROLLVIEW"}
-                            style={styles.pickerInput}
-                            containerStyle={styles.containerPicker}
-                            textStyle={styles.textPicker}
-                            labelStyle={styles.labelPicker}
-                            ArrowUpIconComponent={({ style }) => <Feather name="chevron-up" style={style} color={colors.theme} size={25} />}
-                            ArrowDownIconComponent={({ style }) => <Feather name="chevron-down" style={style} color={colors.theme} size={25} />}
-                            arrowIconContainerStyle={styles.arrowContainer}
-                            tickIconContainerStyle={styles.tickIconContainerStyle}
-                            TickIconComponent={({ style }) => <Feather name="check" style={style} color={colors.theme} size={25} />}
-                            dropDownContainerStyle={styles.dropDownContainerPicker}
-                            listItemContainerStyle={styles.dropDownItemsPicker}
-                            listItemLabelStyle={styles.dropDownLabelPicker}
-                            itemSeparatorStyle={styles.itemSeparator}
-                            selectedItemContainerStyle={styles.selectedItemContainer}
-                            selectedItemLabelStyle={styles.selectedItemLabel}
-                        />
-
-                        {showDatePicker && (
-                            <DateTimePicker
-                                value={date}
-                                mode={'date'}
-                                display={'spinner'}
-                                onChange={(event, date) => handleChangeDate(event, date)}
-                            />
-                        )}
-
-                        {Platform.OS == 'android' && (
-                            <TouchableOpacity activeOpacity={0.7}
+                            <TextInput
                                 style={[
-                                    styles.buttonChangeDate,
-                                    isFilledDate &&
+                                    styles.input,
+                                    (isFocusedName || isFilledName) &&
                                     { borderBottomColor: colors.theme }
                                 ]}
-                                onPress={handleOpenDateTimePickerForAndroid}>
-                                <Text style={styles.dateTimePickerText}>{`Mudar data de validade: ${format(date, 'dd/MM/yyyy')}`}</Text>
-                            </TouchableOpacity>
-                        )}
-
-                        <View style={styles.buttonContainer}>
-
-                            <Button
-                                title="Cadastrar Produto"
-                                onPress={handleSave}
+                                placeholder={"Digite o nome do produto"}
+                                placeholderTextColor={colors.placeholder}
+                                onBlur={handleInputBlurName}
+                                onFocus={handleInputFocusName}
+                                onChangeText={handleInputChangeName}
+                                maxLength={20}
+                                value={name || ''}
                             />
 
+                            <TextInput
+                                style={[
+                                    styles.input,
+                                    (isFocusedDescription || isFilledDescription) &&
+                                    { borderBottomColor: colors.theme }
+                                ]}
+                                placeholder={"Digite a descrição do produto"}
+                                placeholderTextColor={colors.placeholder}
+                                onBlur={handleInputBlurDescription}
+                                onFocus={handleInputFocusDescription}
+                                onChangeText={handleInputChangeDescription}
+                                maxLength={50}
+                                value={description || ''}
+                            />
+
+                            <DropDownPicker
+                                placeholder={'Selecione uma categoria...'}
+                                placeholderStyle={styles.pickerPlaceholder}
+                                open={open}
+                                value={category}
+                                items={items}
+                                setOpen={setOpen}
+                                setValue={setCategory}
+                                setItems={setItems}
+                                itemSeparator={true}
+                                listMode={"SCROLLVIEW"}
+                                style={styles.pickerInput}
+                                containerStyle={styles.containerPicker}
+                                textStyle={styles.textPicker}
+                                labelStyle={styles.labelPicker}
+                                ArrowUpIconComponent={({ style }) => <Feather name="chevron-up" style={style} color={colors.theme} size={25} />}
+                                ArrowDownIconComponent={({ style }) => <Feather name="chevron-down" style={style} color={colors.theme} size={25} />}
+                                arrowIconContainerStyle={styles.arrowContainer}
+                                tickIconContainerStyle={styles.tickIconContainerStyle}
+                                TickIconComponent={({ style }) => <Feather name="check" style={style} color={colors.theme} size={25} />}
+                                dropDownContainerStyle={styles.dropDownContainerPicker}
+                                listItemContainerStyle={styles.dropDownItemsPicker}
+                                listItemLabelStyle={styles.dropDownLabelPicker}
+                                itemSeparatorStyle={styles.itemSeparator}
+                                selectedItemContainerStyle={styles.selectedItemContainer}
+                                selectedItemLabelStyle={styles.selectedItemLabel}
+                            />
+
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    value={date}
+                                    mode={'date'}
+                                    display={'spinner'}
+                                    onChange={(event, date) => handleChangeDate(event, date)}
+                                />
+                            )}
+
+                            {Platform.OS == 'android' && (
+                                <TouchableOpacity activeOpacity={0.7}
+                                    style={[
+                                        styles.buttonChangeDate,
+                                        isFilledDate &&
+                                        { borderBottomColor: colors.theme }
+                                    ]}
+                                    onPress={handleOpenDateTimePickerForAndroid}>
+                                    <Text style={styles.dateTimePickerText}>{`Mudar data de validade: ${format(date, 'dd/MM/yyyy')}`}</Text>
+                                </TouchableOpacity>
+                            )}
+
+                            <View style={styles.buttonContainer}>
+
+                                <Button
+                                    title="Cadastrar Produto"
+                                    onPress={handleSave}
+                                />
+
+                            </View>
+
                         </View>
+                    </KeyboardAvoidingView>
+                    {errorMessage === '' ?
+                        <ModalApp
+                            show={modalVisible}
+                            close={() => setModalVisible(false)}
+                            title={'😄'}
+                            description={'Produto salvo com sucesso!'}
+                            route={'Category'}
+                        /> :
+                        <ModalApp
+                            show={modalVisible}
+                            close={() => setModalVisible(false)}
+                            title={'😕'}
+                            description={'Ocorreu um erro. Tente mudar o nome do produto.'}
+                            route={''}
+                        />
+                    }
+                </ScrollView>
 
+                <View style={styles.footer}>
+                    <View style={styles.container_ads}>
+                        <BannerAd
+                            size={BannerAdSize.FULL_BANNER}
+                            unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                            onAdFailedToLoad={() => console.log('error')}
+                            requestOptions={{
+                                requestNonPersonalizedAdsOnly: true,
+                            }}
+                        />
                     </View>
-                </KeyboardAvoidingView>
-                {errorMessage === '' ?
-                    <ModalApp
-                        show={modalVisible}
-                        close={() => setModalVisible(false)}
-                        title={'😄'}
-                        description={'Produto salvo com sucesso!'}
-                        route={'Category'}
-                    /> :
-                    <ModalApp
-                        show={modalVisible}
-                        close={() => setModalVisible(false)}
-                        title={'😕'}
-                        description={'Ocorreu um erro. Tente mudar o nome do produto.'}
-                        route={''}
-                    />
-                }
-            </ScrollView>
-
-            <View style={styles.footer}>
-                <View style={styles.container_ads}>
-                    <BannerAd
-                        size={BannerAdSize.FULL_BANNER}
-                        unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
-                        onAdFailedToLoad={() => console.log('error')}
-                        requestOptions={{
-                            requestNonPersonalizedAdsOnly: true,
-                        }}
-                    />
                 </View>
-            </View>
-
-
+            </>
         </TouchableWithoutFeedback>
 
     );
@@ -513,6 +513,5 @@ const styles = StyleSheet.create({
     container_ads: {
         width: '100%',
         alignItems: 'center',
-        marginTop: 10,
     }
 });

@@ -1,12 +1,14 @@
-import React from 'react';
-import { StyleSheet, 
-        Text, 
-        Image, 
-        TouchableOpacity, 
-        TouchableOpacityProps, 
-        ImageSourcePropType 
-    } from 'react-native';
+//React imports
+import {
+    StyleSheet,
+    Text,
+    Image,
+    TouchableOpacity,
+    TouchableOpacityProps,
+    ImageSourcePropType
+} from 'react-native';
 
+//Assets imports
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
@@ -18,9 +20,9 @@ interface BotaoLinguagemCorporalProps extends TouchableOpacityProps {
 export default function ButtonCategory({ title, image, ...rest }: BotaoLinguagemCorporalProps) {
 
     return (
-        <TouchableOpacity 
-            activeOpacity={0.7} 
-            style={styles.container} 
+        <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.container}
             {...rest}
         >
             <Image source={image} resizeMode={'contain'} />

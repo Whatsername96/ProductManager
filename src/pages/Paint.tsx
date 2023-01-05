@@ -4,7 +4,8 @@ import { View, StyleSheet, Alert, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import {
     BannerAd,
-    BannerAdSize
+    BannerAdSize,
+    TestIds
 } from 'react-native-google-mobile-ads';
 
 import Header from '../components/Header';
@@ -19,7 +20,7 @@ import colors from '../styles/colors';
 import images from '../styles/images';
 
 export default function Paint() {
-
+    const adUnitIdBanner = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_BANNER;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductProps[]>([]);
     const paint: ProductProps[] = [];
@@ -124,7 +125,7 @@ export default function Paint() {
                 <View style={styles.container_ads}>
                     <BannerAd
                         size={BannerAdSize.FULL_BANNER}
-                        unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                        unitId={adUnitIdBanner} // Test ID, Replace with your-admob-unit-id
                         onAdFailedToLoad={() => console.log('error')}
                         requestOptions={{
                             requestNonPersonalizedAdsOnly: false,

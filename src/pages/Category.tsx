@@ -11,7 +11,8 @@ import {
     InterstitialAd,
     MobileAds,
     MaxAdContentRating,
-    AdEventType
+    AdEventType,
+    TestIds
 } from 'react-native-google-mobile-ads';
 
 //Components imports
@@ -28,7 +29,7 @@ import fonts from '../styles/fonts';
 import images from '../styles/images';
 
 export default function Category() {
-
+    const adUnitIdBanner = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_BANNER;
     const navigation = useNavigation<NavigationProp<any>>();
     const [countShowAdsNavigate, setCountShowAdsNavigate] = useState(0);
     const [countShowAds, setCountShowAds] = useState(0);
@@ -146,7 +147,7 @@ export default function Category() {
                 <View style={styles.container_ads}>
                     <BannerAd
                         size={BannerAdSize.FULL_BANNER}
-                        unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                        unitId={adUnitIdBanner} // Test ID, Replace with your-admob-unit-id
                         onAdFailedToLoad={() => console.log('error')}
                         requestOptions={{
                             requestNonPersonalizedAdsOnly: false,

@@ -24,7 +24,8 @@ import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
 import {
     BannerAd,
-    BannerAdSize
+    BannerAdSize,
+    TestIds
 } from 'react-native-google-mobile-ads';
 
 //Scripts imports
@@ -58,6 +59,7 @@ export default function Register() {
     const { StatusBarManager } = NativeModules;
     const alturaStatusBar = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
 
+    const adUnitIdBanner = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_BANNER;
     const [isFocusedName, setFocusedName] = useState(false);
     const [isFilledName, setIsFilledName] = useState(false);
     const [name, setName] = useState<string>('');
@@ -358,7 +360,7 @@ export default function Register() {
                     <View style={styles.container_ads}>
                         <BannerAd
                             size={BannerAdSize.FULL_BANNER}
-                            unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                            unitId={adUnitIdBanner} // Test ID, Replace with your-admob-unit-id
                             onAdFailedToLoad={() => console.log('error')}
                             requestOptions={{
                                 requestNonPersonalizedAdsOnly: false,

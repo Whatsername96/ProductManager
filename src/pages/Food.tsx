@@ -6,7 +6,8 @@ import { View, StyleSheet, Alert, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import {
     BannerAd,
-    BannerAdSize
+    BannerAdSize,
+    TestIds
 } from 'react-native-google-mobile-ads';
 
 //Components imports
@@ -24,7 +25,7 @@ import colors from '../styles/colors';
 import images from '../styles/images';
 
 export default function Food() {
-
+    const adUnitIdBanner = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_BANNER;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductProps[]>([]);
     const foods: ProductProps[] = [];
@@ -154,7 +155,7 @@ export default function Food() {
                 <View style={styles.container_ads}>
                     <BannerAd
                         size={BannerAdSize.FULL_BANNER}
-                        unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                        unitId={adUnitIdBanner} // Test ID, Replace with your-admob-unit-id
                         onAdFailedToLoad={() => console.log('error')}
                         requestOptions={{
                             requestNonPersonalizedAdsOnly: false,

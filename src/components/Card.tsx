@@ -15,7 +15,8 @@ import { RectButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import {
     InterstitialAd,
-    AdEventType
+    AdEventType,
+    TestIds
 } from 'react-native-google-mobile-ads';
 
 //Scripts imports
@@ -37,7 +38,7 @@ interface BotaoLinguagemCorporalProps {
 }
 
 export default function Card({ title, image, description, date, handleRemove }: BotaoLinguagemCorporalProps) {
-
+    const adUnitIdInterstitial = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_INTERSTITIAL;
     const [countShowAdsNavigate, setCountShowAdsNavigate] = useState(0);
     const [countAdsAndDelete, setCountAdsAndDelete] = useState(0);
     const navigation = useNavigation<NavigationProp<any>>();
@@ -48,7 +49,7 @@ export default function Card({ title, image, description, date, handleRemove }: 
         setCountShowAdsNavigate(countShowAdsNavigate + 1);
         if (countShowAdsNavigate === 2) {
             setCountShowAdsNavigate(0);
-            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL, {
+            let adsInterstitial = InterstitialAd.createForAdRequest(adUnitIdInterstitial, {
                 requestNonPersonalizedAdsOnly: false,
             });
             adsInterstitial.load();

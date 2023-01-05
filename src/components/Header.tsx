@@ -16,7 +16,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Feather } from '@expo/vector-icons';
 import {
     InterstitialAd,
-    AdEventType
+    AdEventType,
+    TestIds
 } from 'react-native-google-mobile-ads';
 
 //Internal imports
@@ -34,6 +35,7 @@ interface HeaderProps {
 }
 
 export default function Header({ title, showBack, showCalendar }: HeaderProps) {
+    const adUnitIdInterstitial = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_INTERSTITIAL;
     const [userName, setUserName] = useState<string>();
     const [countShowAdsNavigate, setCountShowAdsNavigate] = useState(0);
     const navigation = useNavigation<NavigationProp<any>>();
@@ -42,7 +44,7 @@ export default function Header({ title, showBack, showCalendar }: HeaderProps) {
         setCountShowAdsNavigate(countShowAdsNavigate + 1);
         if (countShowAdsNavigate === 2) {
             setCountShowAdsNavigate(0);
-            let adsInterstitial = InterstitialAd.createForAdRequest(UNIT_ID_INTERSTITIAL, {
+            let adsInterstitial = InterstitialAd.createForAdRequest(adUnitIdInterstitial, {
                 requestNonPersonalizedAdsOnly: false,
             });
             adsInterstitial.load();

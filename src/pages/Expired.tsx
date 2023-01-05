@@ -6,7 +6,8 @@ import { View, Text, StyleSheet, Alert, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import {
     BannerAd,
-    BannerAdSize
+    BannerAdSize,
+    TestIds
 } from 'react-native-google-mobile-ads';
 
 //Scripts imports
@@ -27,7 +28,7 @@ import images from '../styles/images';
 import fonts from '../styles/fonts';
 
 export default function Expired() {
-
+    const adUnitIdBanner = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_BANNER;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductProps[]>([]);
     const expired: ProductProps[] = [];
@@ -144,7 +145,7 @@ export default function Expired() {
                 <View style={styles.container_ads}>
                     <BannerAd
                         size={BannerAdSize.FULL_BANNER}
-                        unitId={UNIT_ID_BANNER} // Test ID, Replace with your-admob-unit-id
+                        unitId={adUnitIdBanner} // Test ID, Replace with your-admob-unit-id
                         onAdFailedToLoad={() => console.log('error')}
                         requestOptions={{
                             requestNonPersonalizedAdsOnly: false,

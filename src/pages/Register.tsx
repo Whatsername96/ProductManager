@@ -59,7 +59,7 @@ export default function Register() {
     const { StatusBarManager } = NativeModules;
     const alturaStatusBar = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
 
-    const adUnitIdBanner = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_BANNER;
+    const adUnitIdBanner = __DEV__ ? TestIds.BANNER : UNIT_ID_BANNER;
     const [isFocusedName, setFocusedName] = useState(false);
     const [isFilledName, setIsFilledName] = useState(false);
     const [name, setName] = useState<string>('');

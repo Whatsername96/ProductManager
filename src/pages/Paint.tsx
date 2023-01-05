@@ -20,7 +20,7 @@ import colors from '../styles/colors';
 import images from '../styles/images';
 
 export default function Paint() {
-    const adUnitIdBanner = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_BANNER;
+    const adUnitIdBanner = __DEV__ ? TestIds.BANNER : UNIT_ID_BANNER;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductProps[]>([]);
     const paint: ProductProps[] = [];

@@ -38,7 +38,7 @@ interface BotaoLinguagemCorporalProps {
 }
 
 export default function Card({ title, image, description, date, handleRemove }: BotaoLinguagemCorporalProps) {
-    const adUnitIdInterstitial = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_INTERSTITIAL;
+    const adUnitIdInterstitial = __DEV__ ? TestIds.INTERSTITIAL : UNIT_ID_INTERSTITIAL;
     const [countShowAdsNavigate, setCountShowAdsNavigate] = useState(0);
     const [countAdsAndDelete, setCountAdsAndDelete] = useState(0);
     const navigation = useNavigation<NavigationProp<any>>();

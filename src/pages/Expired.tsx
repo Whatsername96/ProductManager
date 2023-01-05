@@ -28,7 +28,7 @@ import images from '../styles/images';
 import fonts from '../styles/fonts';
 
 export default function Expired() {
-    const adUnitIdBanner = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_BANNER;
+    const adUnitIdBanner = __DEV__ ? TestIds.BANNER : UNIT_ID_BANNER;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<ProductProps[]>([]);
     const expired: ProductProps[] = [];

@@ -29,7 +29,7 @@ import fonts from '../styles/fonts';
 import images from '../styles/images';
 
 export default function Category() {
-    const adUnitIdBanner = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_BANNER;
+    const adUnitIdBanner = __DEV__ ? TestIds.BANNER : UNIT_ID_BANNER;
     const navigation = useNavigation<NavigationProp<any>>();
     const [countShowAdsNavigate, setCountShowAdsNavigate] = useState(0);
     const [countShowAds, setCountShowAds] = useState(0);

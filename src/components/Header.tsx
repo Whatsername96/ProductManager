@@ -35,7 +35,7 @@ interface HeaderProps {
 }
 
 export default function Header({ title, showBack, showCalendar }: HeaderProps) {
-    const adUnitIdInterstitial = __DEV__ ? TestIds.APP_OPEN : UNIT_ID_INTERSTITIAL;
+    const adUnitIdInterstitial = __DEV__ ? TestIds.INTERSTITIAL : UNIT_ID_INTERSTITIAL;
     const [userName, setUserName] = useState<string>();
     const [countShowAdsNavigate, setCountShowAdsNavigate] = useState(0);
     const navigation = useNavigation<NavigationProp<any>>();
